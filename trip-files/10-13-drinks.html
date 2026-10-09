@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17684f">
+  <title>10月13日饮品推荐 · 西双版纳行程</title>
+  <style>
+    :root {
+      --green: #17684f;
+      --green-dark: #124f40;
+      --teal: #147681;
+      --orange: #db8244;
+      --ink: #263a33;
+      --muted: #718079;
+      --paper: #f4f8f4;
+      --card: #fff;
+      --line: #dce8df;
+      --shadow: 0 12px 34px rgba(27, 73, 54, .09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--ink);
+      background: radial-gradient(circle at 90% 8%, rgba(212, 235, 222, .75), transparent 28rem), var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .topbar {
+      min-height: 66px;
+      padding: env(safe-area-inset-top) max(5vw, env(safe-area-inset-right)) 0 max(5vw, env(safe-area-inset-left));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, .92);
+      border-bottom: 1px solid rgba(220, 232, 223, .9);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 900;
+      color: var(--green-dark);
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 800;
+      background: #fff;
+      white-space: nowrap;
+    }
+
+    .wrap {
+      width: min(1000px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      margin: 34px auto 24px;
+      padding: clamp(28px, 6vw, 58px);
+      border-radius: 28px;
+      color: #fff;
+      background: linear-gradient(120deg, #15583f, #187b78);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "🥥";
+      position: absolute;
+      right: 7%;
+      bottom: -35px;
+      font-size: clamp(110px, 20vw, 190px);
+      opacity: .13;
+      transform: rotate(-12deg);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid rgba(255, 255, 255, .35);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .1);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .8px;
+    }
+
+    h1 {
+      max-width: 750px;
+      margin: 18px 0 10px;
+      font-size: clamp(31px, 6vw, 50px);
+      line-height: 1.12;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 0;
+      color: rgba(255, 255, 255, .86);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .tab-bar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      margin: 20px auto 18px;
+      padding: 8px;
+      border: 1px solid rgba(220, 232, 223, .95);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .94);
+      box-shadow: 0 8px 24px rgba(27, 73, 54, .08);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    .tab-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .tab-button {
+      min-height: 48px;
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--green-dark);
+      font: inherit;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: color .2s, background .2s, box-shadow .2s;
+    }
+
+    .tab-button[aria-selected="true"] {
+      color: #fff;
+      background: linear-gradient(120deg, var(--green-dark), var(--teal));
+      box-shadow: 0 5px 14px rgba(18, 79, 64, .2);
+    }
+
+    .tab-button:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 2px;
+    }
+
+    .tab-panel[hidden] {
+      display: none !important;
+    }
+
+    .panel-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      margin: 24px auto 14px;
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: clamp(22px, 4vw, 28px);
+    }
+
+    .panel-heading span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .store-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin: 0 auto 28px;
+    }
+
+    .store-card {
+      min-width: 0;
+      padding: clamp(18px, 4vw, 26px);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .store-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+    }
+
+    .store-number {
+      flex: none;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: #76533a;
+      background: #fff1e2;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .store-title-wrap {
+      min-width: 0;
+    }
+
+    .store-card h3 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: clamp(19px, 3vw, 23px);
+      line-height: 1.4;
+    }
+
+    .store-kind {
+      display: inline-block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    .store-copy {
+      margin: 14px 0 0 55px;
+      font-size: 14.5px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .store-copy p {
+      margin: 0;
+    }
+
+    .store-copy p+p {
+      margin-top: 9px;
+    }
+
+    .store-rec {
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: #76533a;
+      background: #fff6ed;
+    }
+
+    .store-rec strong {
+      color: #9a542b;
+    }
+
+    footer {
+      padding: 24px 18px max(34px, env(safe-area-inset-bottom));
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    footer a {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .home-float {
+      position: fixed;
+      z-index: 20;
+      left: max(16px, env(safe-area-inset-left));
+      right: auto;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 48px;
+      padding: 0 17px;
+      border: 1px solid rgba(255, 255, 255, .5);
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(120deg, var(--green-dark), var(--teal));
+      box-shadow: 0 8px 24px rgba(18, 79, 64, .28);
+      font-size: 14px;
+      font-weight: 900;
+      text-decoration: none;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    .home-float:focus-visible,
+    .back:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 820px) {
+      .topbar {
+        padding-right: max(18px, env(safe-area-inset-right));
+        padding-left: max(18px, env(safe-area-inset-left));
+      }
+
+      .wrap {
+        width: calc(100% - 28px);
+      }
+
+      .hero {
+        margin-top: 20px;
+        border-radius: 22px;
+      }
+
+      .panel-heading {
+        display: block;
+      }
+
+      .panel-heading span {
+        display: block;
+        margin-top: 5px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .topbar {
+        min-height: 0;
+        padding-top: max(10px, env(safe-area-inset-top));
+        padding-bottom: 10px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .brand {
+        font-size: 14px;
+      }
+
+      .wrap {
+        width: calc(100% - 24px);
+      }
+
+      .hero {
+        padding: 26px 22px;
+      }
+
+      .store-copy {
+        margin-left: 0;
+      }
+
+      .tab-button {
+        font-size: 14px;
+        padding: 9px 7px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">西双版纳 · 普洱 7天6晚</a>
+    <a class="back" href="../index.html#days">← 返回每日行程</a>
+  </header>
+  <main class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow">DAY 1 <span>·</span> 10月13日</div>
+      <h1 id="page-title">饮品推荐</h1>
+      <p>按类别浏览咖啡店和本地茶饮甜品推荐。</p>
+    </section>
+    <nav class="tab-bar" aria-label="饮品推荐分类">
+      <div class="tab-list" role="tablist" aria-label="选择饮品类别">
+        <button class="tab-button" id="tab-coffee" type="button" role="tab" aria-controls="panel-coffee"
+          aria-selected="true">☕ 咖啡</button>
+        <button class="tab-button" id="tab-tea" type="button" role="tab" aria-controls="panel-tea" aria-selected="false"
+          tabindex="-1">🍵 茶饮甜品</button>
+      </div>
+    </nav>
+    <section class="tab-panel" id="panel-coffee" role="tabpanel" aria-labelledby="tab-coffee">
+      <div class="panel-heading">
+        <h2>咖啡店推荐</h2><span>6 家精选</span>
+      </div>
+      <div class="store-list">
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">01</span>
+            <div class="store-title-wrap">
+              <h3><a href="https://surl.amap.com/hBXLmmGed43" target="_blank">颂秘翁</a></h3><span
+                class="store-kind">独立单店（非连锁）</span>
+            </div>
+          </div>
+          <div class="store-copy">
+            <p>门店在告庄。咖啡大量融入热带本地香料：木姜子、香茅草、小米辣，风味独特但并不暗黑。</p>
+            <p><strong>推荐：</strong>火塘咖啡、山谷稻，是版纳在地创意咖啡首选。</p>
+          </div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">02</span>
+            <div class="store-title-wrap">
+              <h3><a href="https://surl.amap.com/hDA6CmOE15o" target="_blank">大王花咖啡</a></h3><span
+                class="store-kind">独立单店（非连锁）</span>
+            </div>
+          </div>
+          <div class="store-copy">
+            <p>网红特色小店，坊间有趣味传闻。</p>
+            <p><strong>推荐：</strong>酸角美式、凉拌一号，适合想尝试新奇咖啡风味。</p>
+          </div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">03</span>
+            <div class="store-title-wrap">
+              <h3><a href="https://surl.amap.com/hEdBlo2nflw" target="_blank">脱壳 Talker</a></h3><span
+                class="store-kind">西双版纳本地区域连锁（门店全部集中在版纳境内）</span>
+            </div>
+          </div>
+          <div class="store-copy">
+            <p>自家烘焙咖啡豆，手冲、冰滴口碑很好，可选购咖啡豆。老板原本做可可豆起家。高铁站有</p>
+            <p class="store-rec"><strong>✅ 推荐分店：</strong>脱壳 Talker（告庄咖啡 &amp; 巧克力主题馆），告庄片区，可堂食喝咖啡；曼贺纳工厂店仅能购买豆子，不能堂食。</p>
+          </div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">04</span>
+            <div class="store-title-wrap">
+              <h3>野火咖啡</h3><span class="store-kind">滇西小区域连锁（门店分布在西双版纳、大理）</span>
+            </div>
+          </div>
+          <div class="store-copy">
+            <p>风格简朴专业，主打手冲。推荐埃塞俄比亚、洪都拉斯，香气表现优秀。</p>
+            <p class="store-rec"><strong>✅ 推荐分店：</strong>野火咖啡（纳昆康店），离曼听汉庭酒店很近，市区老店，位置方便。</p>
+          </div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">05</span>
+            <div class="store-title-wrap">
+              <h3>可乐派（Pieloco）</h3><span class="store-kind">云南本土区域连锁（门店集中在昆明、景洪）</span>
+            </div>
+          </div>
+          <div class="store-copy">
+            <p>性价比高，特调很适合夏天，推荐菠萝咖王，清新顺口，整体稳妥不容易踩雷。</p>
+            <p class="store-rec"><strong>✅ 推荐分店：</strong>可乐派（白象湖店），距离曼听汉庭更近；告庄店备选，逛告庄时顺路打卡。</p>
+          </div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">06</span>
+            <div class="store-title-wrap">
+              <h3>北归咖仓 BeanGreat</h3><span class="store-kind">云南全省文旅型区域连锁（遍布普洱、景迈山、昆明、版纳告庄等云南多地，省外少量机场店）</span>
+            </div>
+          </div>
+          <div class="store-copy">
+            <p>咖啡豆品类极丰富，偏向伴手礼选购店，景迈山也有分店，适合挑选豆子带回。</p>
+            <p class="store-rec"><strong>✅ 推荐分店：</strong>北归咖仓（告庄店），逛告庄时顺路，适合挑选咖啡豆伴手礼。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="tab-panel" id="panel-tea" role="tabpanel" aria-labelledby="tab-tea" hidden>
+      <div class="panel-heading">
+        <h2>茶饮甜品推荐</h2><span>3 家精选</span>
+      </div>
+      <div class="store-list">
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">01</span>
+            <div class="store-title-wrap">
+              <h3>象子茶铺</h3><span class="store-kind">独立本土创意茶饮（非连锁）</span>
+            </div>
+          </div>
+          <div class="store-copy">
+            <p>云南专属原创茶饮，大量本地原料。牛油果酸奶巴旦木清爽不腻；黄油红糖普洱推荐不加糖少冰或半糖温热，风味接近原味阿尔卑斯；玫瑰奶白酒表现一般；酸角话梅版纳风味独特但不如前两款。</p>
+            <p class="store-rec"><strong>✅ 推荐分店：</strong>象子茶铺（大润发店），市区，距曼听汉庭适中，逛完可顺路歇脚。</p>
+          </div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">02</span>
+            <div class="store-title-wrap">
+              <h3>臻冰匠</h3><span class="store-kind">起源景洪</span>
+            </div>
+          </div>
+          <div class="store-copy">
+            <p>主打手工现炒冰淇淋，现点现炒，奶感厚重绵密，分量扎实。招牌海盐黄油焦糖冰淇淋；猫山王榴莲、开心果、茉莉、黄油啤酒口味口碑也很好。热门时段排队久，支持小程序线上提前取号。</p>
+            <p class="store-rec"><strong>✅ 推荐分店：</strong>臻冰匠（告庄店），逛星光夜市顺路打卡。</p>
+          </div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">03</span>
+            <div class="store-title-wrap">
+              <h3>啰啰冰屋</h3><span class="store-kind">独立老店（非连锁）</span>
+            </div>
+          </div>
+          <div class="store-copy">
+            <p>景洪三十多年傣味糖水冰铺，本地人从小吃到大。招牌泡鲁达（椰奶+烤面包干），还有红豆菠萝刨冰、芒果糯米饭、炒汤圆。</p>
+            <p class="store-rec"><strong>✅ 推荐分店：</strong>啰啰冰屋（总店，莎湾老城区），距曼听汉庭约 1.5km。</p>
+          </div>
+        </article>
+        
+
+      </div>
+    </section>
+  </main>
+  <footer>10月13日饮品推荐 · <a href="../index.html#days">回到完整行程</a></footer>
+  <a class="home-float" href="../index.html" aria-label="返回首页">⌂ 返回首页</a>
+  <script>
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
+      function activate(tab, updateHash) {
+        tabs.forEach(function (item) {
+          var active = item === tab;
+          item.setAttribute('aria-selected', String(active));
+          item.tabIndex = active ? 0 : -1;
+        });
+        panels.forEach(function (panel) { panel.hidden = panel.id !== tab.getAttribute('aria-controls'); });
+        if (updateHash) history.replaceState(null, '', tab.id === 'tab-tea' ? '#tea-dessert' : '#coffee');
+      }
+      tabs.forEach(function (tab, index) {
+        tab.addEventListener('click', function () { activate(tab, true); });
+        tab.addEventListener('keydown', function (event) {
+          var next = index;
+          if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          tabs[next].focus();
+          activate(tabs[next], true);
+        });
+      });
+      function activateFromHash() {
+        var tab = location.hash === '#tea-dessert' ? tabs[1] : tabs[0];
+        activate(tab, false);
+      }
+      window.addEventListener('hashchange', activateFromHash);
+      activateFromHash();
+    })();
+  </script>
+</body>
+
+</html>
