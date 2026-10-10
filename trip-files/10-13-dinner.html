@@ -96,12 +96,30 @@
     }
     .photo-link img { display: block; width: auto; max-width: 100%; height: 360px; object-fit: contain; object-position: center 15%; }
 
-    /* 无图店铺的 emoji 占位块 */
+    /* 无图店铺的渐变封面（替代光秃秃的 emoji） */
     .photo-placeholder {
-      display: flex; grid-column: 2; grid-row: 1 / span 2; align-items: center; justify-content: center;
-      width: 100%; min-height: 360px; border-radius: 12px;
-      font-size: 90px; background: linear-gradient(145deg, #e8f3ec, #d4ebe0);
+      display: flex; flex-direction: column; grid-column: 2; grid-row: 1 / span 2;
+      align-items: center; justify-content: center; gap: 8px;
+      width: 100%; min-height: 360px; border-radius: 12px; text-decoration: none;
+      background: linear-gradient(160deg, #fde8d4, #f9c9a3); color: #76533a;
+      transition: transform .2s, box-shadow .2s;
     }
+    .photo-placeholder:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(224,123,57,.25); }
+    .photo-placeholder .ph-emoji { font-size: 72px; line-height: 1; }
+    .photo-placeholder .ph-label { font-size: 13px; font-weight: 800; letter-spacing: .3px; }
+    .photo-placeholder .ph-sub { font-size: 11.5px; opacity: .75; }
+    .photo-placeholder.ph-green { background: linear-gradient(160deg, #d4ebe0, #a8d5c0); color: #124f40; }
+    .photo-placeholder.ph-purple { background: linear-gradient(160deg, #e8dff0, #c9b8dd); color: #4a3560; }
+    .photo-placeholder.ph-night { background: linear-gradient(160deg, #2d3561, #1a1f3a); color: #f0e6c8; }
+
+    /* 大众点评显眼按钮 */
+    .dp-btn {
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 8px;
+      padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 800;
+      color: #fff; background: linear-gradient(120deg, #e8582a, #f5a623);
+      text-decoration: none; box-shadow: 0 4px 12px rgba(232,88,42,.25);
+    }
+    .dp-btn:hover { filter: brightness(1.08); }
 
     .note {
       margin: 18px 0 34px; padding: 14px 17px; border-left: 4px solid var(--orange);
@@ -178,13 +196,18 @@
           <span class="hours">18:00 – 01:00</span>
         </header>
         <div class="restaurant-details description">
-          <p><a href="https://m.dianping.com/shopinfo/G2W2GO9UCcpPy246?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=4473&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">景洪 20 多年老牌傣味烧烤，招牌炭火罗非鱼，油呛心管、炭烤脑花、平价小串，芭蕉叶装盘</a></p>
+          <p>景洪 20 多年老牌傣味烧烤，招牌炭火罗非鱼，油呛心管、炭烤脑花、平价小串，芭蕉叶装盘</p>
           <p>⭐ 4.4 · ¥68/人 · 鑫盛时代广场（勐泐大道88号）</p>
           <p>✅ 优点：性价比高，炭火香气足，菜品丰富，傣风壁画好拍照</p>
           <p>❌ 缺点：饭点人多喧闹，露天座位夏季闷热，傣味酸辣偏重</p>
           <p>环境：露天大排档，竹桌矮凳，墙面傣式雨林彩绘，市井氛围感强</p>
+          <a class="dp-btn" href="https://m.dianping.com/shopinfo/G2W2GO9UCcpPy246?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=4473&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">📱 大众点评查看实拍图</a>
         </div>
-        <div class="photo-placeholder" aria-hidden="true">🐟</div>
+        <a class="photo-placeholder" href="https://m.dianping.com/shopinfo/G2W2GO9UCcpPy246?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=4473&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">
+          <span class="ph-emoji">🐟</span>
+          <span class="ph-label">洋洋烤鱼</span>
+          <span class="ph-sub">點擊查看大眾點評 →</span>
+        </a>
       </article>
 
       <!-- 玉儿叫勐海傣味烧烤 -->
@@ -199,7 +222,11 @@
           <p>❌ 缺点：晚高峰排队久，酸辣口味偏重，上菜速度偏慢</p>
           <p>环境：居民区市井大排档，塑料矮桌，烟火气强，座位紧凑嘈杂</p>
         </div>
-        <div class="photo-placeholder" aria-hidden="true">🍢</div>
+        <div class="photo-placeholder ph-green">
+          <span class="ph-emoji">🍢</span>
+          <span class="ph-label">玉儿叫勐海傣味烧烤</span>
+          <span class="ph-sub">本地人夜宵店</span>
+        </div>
       </article>
 
       <!-- 情益饭店 -->
@@ -209,14 +236,19 @@
           <span class="hours">11:00 – 21:00</span>
         </header>
         <div class="restaurant-details description">
-          <p><a href="https://m.dianping.com/shopinfo/lakvqun3NQaeOeTG?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=248&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">景洪本地老牌家常菜馆，偏汉味，冰柜自选新鲜食材。招牌薄荷排骨、本地白切鸡、南瓜藤花汤，老食客常点苦菜芋头汤。本地人光顾很多，区别于夜市网红改良傣味</a></p>
+          <p>景洪本地老牌家常菜馆，偏汉味，冰柜自选新鲜食材。招牌薄荷排骨、本地白切鸡、南瓜藤花汤，老食客常点苦菜芋头汤。本地人光顾很多，区别于夜市网红改良傣味</p>
           <p>⭐ 4.4 · ¥61/人 · 傣江南 · 宣慰大道金沙滩</p>
           <p>✅ 优点：菜品分量足，食材新鲜；薄荷排骨香而不腻，白切鸡皮爽肉香；性价比高，口味地道，上菜速度快；老板服务热情</p>
           <p>❌ 缺点：装修简陋，只有上下两层；饭点需要等位；没有精致摆盘</p>
           <p>环境：朴实家常小店，无花哨装修，本地市井小店氛围</p>
           <p>位置：江边夜市附近，骑电动车约 3km，离星光夜市不远</p>
+          <a class="dp-btn" href="https://m.dianping.com/shopinfo/lakvqun3NQaeOeTG?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=248&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">📱 大众点评查看实拍图</a>
         </div>
-        <div class="photo-placeholder" aria-hidden="true">🍖</div>
+        <a class="photo-placeholder" href="https://m.dianping.com/shopinfo/lakvqun3NQaeOeTG?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=248&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">
+          <span class="ph-emoji">🍖</span>
+          <span class="ph-label">情益饭店（金沙滩店）</span>
+          <span class="ph-sub">點擊查看大眾點評 →</span>
+        </a>
       </article>
 
       <!-- 秋燕8号小炒（从午餐加入） -->
@@ -226,10 +258,11 @@
           <span class="hours">11:00 – 21:30</span>
         </header>
         <div class="restaurant-details description">
-          <p><a href="https://m.dianping.com/shopinfo/H3VZJBcA8kxVCYZc?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=1783&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">特色：傣味家常小炒、凉拌，锅气足</a></p>
+          <p>特色：傣味家常小炒、凉拌，锅气足</p>
           <p>✅ 优点：游客少，食材新鲜，性价比高</p>
           <p>❌ 缺点：名气小，部分菜偏酸苦，位置偏</p>
           <p>环境：普通大排档，无网红装修</p>
+          <a class="dp-btn" href="https://m.dianping.com/shopinfo/H3VZJBcA8kxVCYZc?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=1783&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">📱 大众点评</a>
         </div>
         <a class="photo-link" href="./pic/banner_food/秋燕8号小炒.webp" target="_blank" rel="noopener"><img src="./pic/banner_food/秋燕8号小炒.webp" width="1000" height="2174" loading="lazy" alt="秋燕8号小炒推荐菜照片，点击查看原图"></a>
       </article>
@@ -241,10 +274,11 @@
           <span class="hours">12:00 – 21:30</span>
         </header>
         <div class="restaurant-details description">
-          <p><a href="https://m.dianping.com/shopinfo/l6gQLKp344yP59Um?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=25474&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">特色：薄荷炸排骨、佐料牛肉、毛奶洋芋，冰柜看菜点菜</a></p>
+          <p>特色：薄荷炸排骨、佐料牛肉、毛奶洋芋，冰柜看菜点菜</p>
           <p>✅ 优点：本地人食堂，分量大，性价比高，锅气强</p>
           <p>❌ 缺点：环境老旧，服务佛系，菜品重油重辣</p>
           <p>环境：临街苍蝇馆，室内 + 露天外摆</p>
+          <a class="dp-btn" href="https://m.dianping.com/shopinfo/l6gQLKp344yP59Um?msource=Appshare2021&utm_source=shop_share&shoptype=10&shopcategoryid=25474&cityid=1908&isoversea=0" target="_blank" rel="noopener noreferrer">📱 大众点评</a>
         </div>
         <a class="photo-link" href="./pic/banner_food/铜矿小吃店.webp" target="_blank" rel="noopener"><img src="./pic/banner_food/铜矿小吃店.webp" width="1000" height="2174" loading="lazy" alt="铜矿小吃店推荐菜照片，点击查看原图"></a>
       </article>
@@ -260,7 +294,11 @@
           <p>✅ 优点：氛围好，选择多，适合散步拍照</p>
           <p>❌ 缺点：游客多，价格略高，部分摊位品质参差</p>
         </div>
-        <div class="photo-placeholder" aria-hidden="true">🌃</div>
+        <div class="photo-placeholder ph-night">
+          <span class="ph-emoji">🌃</span>
+          <span class="ph-label">湄公河·星光夜市</span>
+          <span class="ph-sub">邊逛邊吃</span>
+        </div>
       </article>
 
     </section>
