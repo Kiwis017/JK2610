@@ -48,31 +48,37 @@
       background: rgba(255,255,255,.1); font-size: 12px; font-weight: 900; letter-spacing: .8px;
     }
     h1 { max-width: 650px; margin: 18px 0 10px; font-size: clamp(32px, 6vw, 52px); line-height: 1.12; letter-spacing: -.7px; }
-    .hero p { max-width: 620px; margin: 0; color: rgba(255,255,255,.84); line-height: 1.8; font-size: 15px; }
+    .hero p { max-width: 720px; margin: 0; color: rgba(255,255,255,.84); line-height: 1.8; font-size: 15px; }
     .section-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; width: 100%; margin: 30px auto 15px; }
     .section-head h2 { margin: 0; font-size: 23px; color: var(--green-dark); }
     .section-head p { margin: 0; color: var(--muted); font-size: 13px; }
     .shop-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; width: 100%; margin: 0 auto; }
     .shop-card {
-      display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 28%);
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, 30%);
       grid-template-rows: auto 1fr; align-items: start; gap: 16px 24px;
       min-width: 0; padding: 24px; border: 1px solid var(--line); border-radius: 20px;
       background: var(--card); box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s;
     }
     .shop-card:hover { transform: translateY(-3px); box-shadow: 0 17px 38px rgba(27, 73, 54, .14); }
     .shop-card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
-    .shop-name { color: var(--green-dark); font-size: 19px; font-weight: 900; line-height: 1.4; }
-    .shop-details { display: grid; align-content: start; gap: 5px; min-width: 0; font-size: 14.5px; line-height: 1.65; color: var(--ink); overflow-wrap: anywhere; }
+    .shop-name { color: var(--green-dark); font-size: 20px; font-weight: 900; line-height: 1.4; }
+    .location {
+      display: inline-flex; align-items: center; min-height: 30px; padding: 5px 11px;
+      border-radius: 999px; background: #e6f2ec; color: #28634f; font-size: 12px; font-weight: 800;
+    }
+    .shop-details { display: grid; align-content: start; gap: 10px; min-width: 0; font-size: 15px; line-height: 1.8; color: var(--ink); overflow-wrap: anywhere; }
     .shop-details p { margin: 0; }
-    .hours {
-      display: inline-flex; align-items: center; min-height: 30px; padding: 4px 10px;
-      border-radius: 999px; background: #fff3e8; color: #76533a; font-size: 12px; font-weight: 800; white-space: normal;
-    }
-    .shop-placeholder {
+    .shop-details strong { color: var(--green-dark); }
+    .shop-photo, .shop-placeholder {
       display: flex; grid-column: 2; grid-row: 1 / span 2; align-items: center; justify-content: center;
-      width: 100%; min-height: 360px; border-radius: 12px;
-      font-size: 90px; background: linear-gradient(145deg, #e8f3ec, #d4ebe0);
+      width: 100%; height: 350px; overflow: hidden; border-radius: 14px;
+      background: linear-gradient(145deg, #e8f3ec, #d4ebe0);
     }
+    .shop-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .shop-placeholder { color: #28634f; font-size: 72px; }
+    .shop-photo .photo-placeholder { display: none; color: #28634f; font-size: 56px; }
+    .shop-photo.is-missing img { display: none; }
+    .shop-photo.is-missing .photo-placeholder { display: block; }
     .note {
       margin: 18px 0 34px; padding: 14px 17px; border-left: 4px solid var(--orange);
       border-radius: 0 12px 12px 0; background: #fff6ed; color: #76533a; font-size: 13px; line-height: 1.7;
@@ -93,14 +99,15 @@
       .section-head { display: block; }
       .section-head p { margin-top: 6px; }
       .shop-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-      .shop-name { font-size: 17px; }
       .shop-card { grid-template-columns: minmax(0, 1fr) 220px; padding: 17px; }
-      .shop-placeholder { min-height: 320px; height: 320px; }
+      .shop-photo, .shop-placeholder { height: 320px; }
       .note { margin-bottom: 24px; }
     }
     @media (max-width: 560px) {
       .shop-card { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 16px; }
-      .shop-placeholder { grid-column: 1; grid-row: auto; height: 250px; min-height: 250px; font-size: 70px; }
+      .shop-photo, .shop-placeholder { grid-column: 1; grid-row: auto; height: auto; aspect-ratio: 3 / 4; max-height: 420px; }
+      .shop-name { font-size: 18px; }
+      .shop-details { font-size: 14px; }
     }
     @media (max-width: 420px) {
       .topbar { min-height: 0; padding-top: max(10px, env(safe-area-inset-top)); padding-bottom: 10px; align-items: flex-start; flex-direction: column; gap: 4px; }
@@ -123,45 +130,95 @@
     <section class="hero" aria-labelledby="page-title">
       <div class="eyebrow">DAY 1 <span>·</span> 10月13日</div>
       <h1 id="page-title">文創小店</h1>
-      <p>吃完晚餐逛星光夜市，順路挑伴手禮。</p>
+      <p>從告莊夜市到曼賀納古寨，挑選傣族非遺、雨林香氛與設計師手作伴手禮。</p>
     </section>
 
     <div class="section-head">
-      <h2>夜市文創</h2>
-      <p>2 家 · 星光夜市內</p>
+      <h2>告莊 · 曼賀納文創精選</h2>
+      <p>5 家特色店 · 位置與選品供逛店參考</p>
     </div>
 
-    <section class="shop-grid" aria-label="文創小店">
+    <section class="shop-grid" aria-label="西双版纳文创店推荐">
+      <article class="shop-card">
+        <header class="shop-card-head">
+          <span class="shop-name">新华书店文创店（初见文创）</span>
+          <span class="location">📍 告庄西双景 · 星光夜市旁</span>
+        </header>
+        <div class="shop-details">
+          <p><strong>位置：</strong>告庄西双景，紧邻星光夜市。</p>
+          <p><strong>特点：</strong>新华书店授权文创，品类平价丰富，汇集傣纸、傣陶、傣锦等非遗小物件，也有版纳主题地图、豆荚娃娃等。支持免费盖章，适合收集旅行纪念章；伴手礼选择多、明码标价，选购省心。</p>
+        </div>
+        <a class="shop-photo" href="./pic/banner_thing/新华书店文创店.webp" target="_blank" rel="noopener" aria-label="打开新华书店文创店照片">
+          <img src="./pic/banner_thing/新华书店文创店.webp" loading="lazy" alt="新华书店文创店与初见文创">
+          <span class="photo-placeholder" aria-hidden="true">📷</span>
+        </a>
+      </article>
+
+      <article class="shop-card">
+        <header class="shop-card-head">
+          <span class="shop-name">二三文创</span>
+          <span class="location">📍 曼贺纳古寨 · 告庄有分店</span>
+        </header>
+        <div class="shop-details">
+          <p><strong>位置：</strong>曼贺纳古寨内；告庄星光夜市也设有分店。</p>
+          <p><strong>特点：</strong>原创独立设计，拒绝流水线网红文创。产品深度融合傣族文化元素，冰箱贴、傣锦卡包、茶叶礼盒做工精致，纹样独特、不容易撞款。主理人可讲解设计背后的民族故事，单品价格偏高。</p>
+        </div>
+        <a class="shop-photo" href="./pic/banner_thing/二三文创.webp" target="_blank" rel="noopener" aria-label="打开二三文创照片">
+          <img src="./pic/banner_thing/二三文创.webp" loading="lazy" alt="二三文创店铺与产品">
+          <span class="photo-placeholder" aria-hidden="true">📷</span>
+        </a>
+      </article>
 
       <article class="shop-card">
         <header class="shop-card-head">
           <span class="shop-name">万物香铺</span>
-          <span class="hours">夜市营业时间</span>
+          <span class="location">📍 告庄西双景 · 夜市步行约5分钟</span>
         </header>
         <div class="shop-details">
-          <p>文创香氛小店，适合挑伴手礼。</p>
+          <p><strong>位置：</strong>告庄西双景店，距星光夜市步行约5分钟；热带花卉园另有分店。</p>
+          <p><strong>特点：</strong>主打雨林草木调原创香氛，原料取自本地热带植物。产品包含鲜果蜡烛、傣药香囊、傣王线香，包装精致、有雨林氛围感，适合作为伴手礼；店内试香区可免费试闻各类香型。</p>
         </div>
-        <div class="shop-placeholder" aria-hidden="true">🪔</div>
+        <a class="shop-photo" href="./pic/banner_thing/万物香铺.webp" target="_blank" rel="noopener" aria-label="打开万物香铺照片">
+          <img src="./pic/banner_thing/万物香铺.webp" loading="lazy" alt="万物香铺雨林香氛产品">
+          <span class="photo-placeholder" aria-hidden="true">📷</span>
+        </a>
       </article>
 
       <article class="shop-card">
         <header class="shop-card-head">
-          <span class="shop-name">新华书店文创店</span>
-          <span class="hours">夜市营业时间</span>
+          <span class="shop-name">赶摆客集市</span>
+          <span class="location">📍 曼贺纳古寨 · 告庄打车约10–15分钟</span>
         </header>
         <div class="shop-details">
-          <p>位於星光夜市內，文創產品價格合理，推薦逛逛。</p>
+          <p><strong>位置：</strong>曼贺纳古寨内，从告庄打车约10–15分钟。</p>
+          <p><strong>特点：</strong>小型设计师集合市集，汇集泰国、尼泊尔等多国手工孤品，包含手工银饰、种子饰品、棉麻服饰、热带植物标本。许多单品独一件，审美小众独特；价格偏高。</p>
         </div>
-        <div class="shop-placeholder" aria-hidden="true">📚</div>
+        <a class="shop-photo" href="./pic/banner_thing/赶摆客集市.webp" target="_blank" rel="noopener" aria-label="打开赶摆客集市照片">
+          <img src="./pic/banner_thing/赶摆客集市.webp" loading="lazy" alt="赶摆客集市手工饰品与设计师选品">
+          <span class="photo-placeholder" aria-hidden="true">📷</span>
+        </a>
       </article>
 
+     
     </section>
 
-    <p class="note">兩家都在星光夜市範圍內，晚餐後散步即可到達。</p>
+    <p class="note">逛店前可先按位置规划路线：告庄店适合晚餐后顺逛，二三文创与赶摆客集市位于曼贺纳古寨。店铺位置与分店情况出发前可再确认。</p>
   </main>
 
   <footer>10月13日文創小店 · <a href="../index.html#days">回到完整行程</a></footer>
   <a class="home-float" href="../index.html" aria-label="返回首页">⌂ 返回首页</a>
+  <script>
+    document.querySelectorAll('.shop-photo img').forEach(function (image) {
+      image.addEventListener('error', function () {
+        var frame = image.closest('.shop-photo');
+        if (!frame) return;
+        frame.classList.add('is-missing');
+        frame.removeAttribute('href');
+        frame.removeAttribute('target');
+        frame.setAttribute('aria-label', '店铺照片暂时无法显示');
+      });
+    });
+  </script>
 </body>
 
 </html>
