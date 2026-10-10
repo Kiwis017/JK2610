@@ -433,8 +433,8 @@
             <p><strong>环境：</strong>古木参天，鎏金佛殿，庄严肃穆。</p>
           </div>
         </div>
-        <a class="rec-photo" href="./pic/1013_afternoon/总佛寺.PNG" target="_blank" rel="noopener" aria-label="打开总佛寺原图">
-          <img src="./pic/1013_afternoon/web/总佛寺.webp" loading="lazy" alt="总佛寺照片">
+        <a class="rec-photo" href="./pic/1013_afternoon/总佛寺.webp" target="_blank" rel="noopener" aria-label="打开总佛寺原图">
+          <img src="./pic/1013_afternoon/总佛寺.webp" loading="lazy" alt="总佛寺照片">
           <span class="photo-placeholder">📷 总佛寺照片待添加</span>
         </a>
       </article>
@@ -454,9 +454,9 @@
             <p><strong>环境：</strong>原生市井菜市场，摊位密集；布料市场挂满色彩丰富傣式绸缎、棉麻；美食街是校园门口街边小吃巷，本地烟火气浓厚。</p>
           </div>
         </div>
-        <a class="rec-photo" href="./pic/1013_afternoon/景洪农贸市场州一中片区.PNG" target="_blank" rel="noopener"
+        <a class="rec-photo" href="./pic/1013_afternoon/景洪农贸市场州一中片区.webp" target="_blank" rel="noopener"
           aria-label="打开景洪农贸市场+州一中美食街原图">
-          <img src="./pic/1013_afternoon/web/景洪农贸市场州一中片区.webp" loading="lazy" alt="景洪农贸市场+州一中美食街照片">
+          <img src="./pic/1013_afternoon/景洪农贸市场州一中片区.webp" loading="lazy" alt="景洪农贸市场+州一中美食街照片">
           <span class="photo-placeholder">📷 景洪农贸市场+州一中美食街照片待添加</span>
         </a>
       </article>
@@ -472,8 +472,8 @@
             <p><strong>环境：</strong>热带古树、放生湖、傣王行宫，东南亚园林风。</p>
           </div>
         </div>
-        <a class="rec-photo" href="./pic/1013_afternoon/曼听公园.PNG" target="_blank" rel="noopener" aria-label="打开曼听公园原图">
-          <img src="./pic/1013_afternoon/web/曼听公园.webp" loading="lazy" alt="曼听公园照片">
+        <a class="rec-photo" href="./pic/1013_afternoon/曼听公园.webp" target="_blank" rel="noopener" aria-label="打开曼听公园原图">
+          <img src="./pic/1013_afternoon/曼听公园.webp" loading="lazy" alt="曼听公园照片">
           <span class="photo-placeholder">📷 曼听公园照片待添加</span>
         </a>
       </article>
@@ -489,9 +489,9 @@
             <p><strong>环境：</strong>大面积热带绿植、湖泊草坪，热带自然风。</p>
           </div>
         </div>
-        <a class="rec-photo" href="./pic/1013_afternoon/热带花卉园.PNG" target="_blank" rel="noopener"
+        <a class="rec-photo" href="./pic/1013_afternoon/热带花卉园.webp" target="_blank" rel="noopener"
           aria-label="打开热带花卉园原图">
-          <img src="./pic/1013_afternoon/web/热带花卉园.webp" loading="lazy" alt="热带花卉园照片">
+          <img src="./pic/1013_afternoon/热带花卉园.webp" loading="lazy" alt="热带花卉园照片">
           <span class="photo-placeholder">📷 热带花卉园照片待添加</span>
         </a>
       </article>
@@ -506,14 +506,6 @@
       image.addEventListener('error', function () {
         var frame = image.closest('.rec-photo');
         if (!frame) return;
-        if (!image.dataset.pngFallback) {
-          var originalImage = frame.getAttribute('href');
-          image.dataset.pngFallback = '1';
-          if (originalImage && /\.PNG$/i.test(originalImage)) {
-            image.src = originalImage;
-            return;
-          }
-        }
         frame.classList.add('is-missing');
         frame.removeAttribute('href');
         frame.removeAttribute('target');
