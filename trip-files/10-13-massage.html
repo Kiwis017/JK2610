@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17684f">
+  <title>10月13日按摩SPA · 西双版纳行程</title>
+  <style>
+    :root {
+      --green: #17684f; --green-dark: #124f40; --teal: #147681; --orange: #db8244;
+      --ink: #263a33; --muted: #718079; --paper: #f4f8f4; --card: #fff; --line: #dce8df;
+      --shadow: 0 12px 34px rgba(27, 73, 54, .09);
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      min-width: 320px; margin: 0; color: var(--ink);
+      background: radial-gradient(circle at 90% 8%, rgba(212,235,222,.75), transparent 28rem), var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .topbar {
+      min-height: 66px; padding: env(safe-area-inset-top) max(5vw, env(safe-area-inset-right)) 0 max(5vw, env(safe-area-inset-left));
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      background: rgba(255,255,255,.92); border-bottom: 1px solid rgba(220,232,223,.9);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    }
+    .brand { text-decoration: none; font-weight: 900; color: var(--green-dark); letter-spacing: .2px; }
+    .back {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: 999px; text-decoration: none;
+      color: var(--green-dark); font-size: 13px; font-weight: 800; background: #fff; white-space: nowrap;
+    }
+    .wrap { width: min(1120px, calc(100% - 36px)); margin: 0 auto; padding-right: env(safe-area-inset-right); padding-left: env(safe-area-inset-left); }
+    .hero {
+      position: relative; overflow: hidden; margin: 34px auto 24px; padding: clamp(26px, 4.5vw, 46px);
+      border-radius: 28px; color: #fff; background: linear-gradient(120deg, #15583f, #187b78); box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "💆"; position: absolute; right: 7%; bottom: -25px; font-size: clamp(100px, 20vw, 190px);
+      opacity: .13; transform: rotate(-12deg); pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px;
+      border: 1px solid rgba(255,255,255,.35); border-radius: 999px;
+      background: rgba(255,255,255,.1); font-size: 12px; font-weight: 900; letter-spacing: .8px;
+    }
+    h1 { max-width: 650px; margin: 18px 0 10px; font-size: clamp(32px, 6vw, 52px); line-height: 1.12; letter-spacing: -.7px; }
+    .hero p { max-width: 620px; margin: 0; color: rgba(255,255,255,.84); line-height: 1.8; font-size: 15px; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; width: 100%; margin: 30px auto 15px; }
+    .section-head h2 { margin: 0; font-size: 23px; color: var(--green-dark); }
+    .section-head p { margin: 0; color: var(--muted); font-size: 13px; }
+    .massage-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; width: 100%; margin: 0 auto; }
+    .massage-card {
+      padding: 24px; border: 1px solid var(--line); border-radius: 20px;
+      background: var(--card); box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s;
+    }
+    .massage-card:hover { transform: translateY(-3px); box-shadow: 0 17px 38px rgba(27, 73, 54, .14); }
+    .massage-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+    .massage-name { color: var(--green-dark); font-size: 19px; font-weight: 900; line-height: 1.4; }
+    .massage-name a { text-decoration: none; }
+    .massage-name a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .hours {
+      display: inline-flex; align-items: center; min-height: 30px; padding: 4px 10px;
+      border-radius: 999px; background: #fff3e8; color: #76533a; font-size: 12px; font-weight: 800; white-space: normal;
+    }
+    .massage-info { display: grid; gap: 5px; font-size: 14.5px; line-height: 1.65; color: var(--ink); overflow-wrap: anywhere; }
+    .massage-info p { margin: 0; }
+    .massage-info a { color: inherit; text-decoration-color: rgba(23, 104, 79, .35); text-underline-offset: 2px; }
+    .massage-info a:hover { color: var(--green); }
+    .price { display: inline-block; font-weight: 800; color: var(--orange); }
+    .note {
+      margin: 18px 0 34px; padding: 14px 17px; border-left: 4px solid var(--orange);
+      border-radius: 0 12px 12px 0; background: #fff6ed; color: #76533a; font-size: 13px; line-height: 1.7;
+    }
+    footer { padding: 24px 18px max(34px, env(safe-area-inset-bottom)); text-align: center; color: var(--muted); font-size: 12px; }
+    footer a { color: var(--green); font-weight: 800; }
+    .home-float {
+      position: fixed; z-index: 20; left: max(16px, env(safe-area-inset-left)); right: auto; bottom: max(18px, env(safe-area-inset-bottom));
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 48px; padding: 0 17px;
+      border: 1px solid rgba(255,255,255,.5); border-radius: 999px; color: #fff;
+      background: linear-gradient(120deg, var(--green-dark), var(--teal)); box-shadow: 0 8px 24px rgba(18,79,64,.28);
+      font-size: 14px; font-weight: 900; text-decoration: none;
+    }
+    @media (max-width: 820px) {
+      .topbar { padding-right: max(18px, env(safe-area-inset-right)); padding-left: max(18px, env(safe-area-inset-left)); }
+      .wrap { width: calc(100% - 28px); }
+      .hero { margin-top: 20px; border-radius: 22px; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 6px; }
+      .massage-grid { gap: 14px; }
+      .massage-card { padding: 17px; }
+      .massage-name { font-size: 17px; }
+      .note { margin-bottom: 24px; }
+    }
+    @media (max-width: 420px) {
+      .topbar { min-height: 0; padding-top: max(10px, env(safe-area-inset-top)); padding-bottom: 10px; align-items: flex-start; flex-direction: column; gap: 4px; }
+      .brand { max-width: none; font-size: 14px; }
+      .back { font-size: 13px; }
+      .wrap { width: calc(100% - 24px); }
+      .hero { padding: 26px 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">西双版纳 · 普洱 7天6晚</a>
+    <a class="back" href="../index.html#days">← 返回每日行程</a>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow">DAY 1 <span>·</span> 10月13日</div>
+      <h1 id="page-title">按摩 SPA</h1>
+      <p>逛完星光夜市，按掉一天的疲惫。</p>
+    </section>
+
+    <div class="section-head">
+      <h2>放松推荐</h2>
+      <p>3 个选择 · 告庄 / 景洪市区</p>
+    </div>
+
+    <section class="massage-grid" aria-label="按摩SPA推荐">
+
+      <!-- 静谷头疗采耳SPA -->
+      <article class="massage-card">
+        <header class="massage-head">
+          <a class="massage-name" href="https://surl.amap.com/5ZtY1Po17kK" target="_blank" rel="noopener noreferrer">静谷头疗采耳SPA（告庄）</a>
+          <span class="hours">13:00 – 00:30</span>
+        </header>
+        <div class="massage-info">
+          <p><span class="price">💰 人均 ¥118</span></p>
+          <p>✨ 特色：闹中取静，主打头疗、禅洗、采耳，旅拍后很适合来做卸妆+头疗套餐；技师话少，全程可睡觉，无推销；房间独立私密性好，卫生到位；做完赠送水果、茶饮零食；肩颈放松项目口碑很高，适合逛完星光夜市缓解头部、肩颈疲惫。</p>
+          <p>📞 预约微信：18787972087</p>
+          <p><a href="https://m.dianping.com/shopshare/l6Gc4xs75z6Vkrp9?msource=Appshare2021&utm_source=shop_share&shoptype=30&shopcategoryid=50401&isoversea=0&shareid=xoBDHPousu_1791655679" target="_blank" rel="noopener noreferrer">大众点评：静谷头疗采耳SPA</a></p>
+        </div>
+      </article>
+
+      <!-- 迦罗纳泰式古法按摩 -->
+      <article class="massage-card">
+        <header class="massage-head">
+          <a class="massage-name" href="https://surl.amap.com/6g573cW115XK" target="_blank" rel="noopener noreferrer">迦罗纳泰式古法按摩（告庄景法寨店）</a>
+          <span class="hours">12:00 – 02:00</span>
+        </header>
+        <div class="massage-info">
+          <p><span class="price">💰 人均 ¥130</span></p>
+          <p>✨ 特色：告庄老牌泰式古法按摩；有泰国认证技师，有仪式感净足礼（不计入按摩时长）；主打泰式全身推拿、被动瑜伽拉伸、草本热敷；可更换技师，可调整力度；全程无推销；项目结束赠送茶点、普洱茶，还会给小伴手礼；床单毛巾一客一换，适合夜市暴走后全身深度放松。</p>
+          <p>环境：泰式氛围感，独立房间，干净整洁。</p>
+          <p><a href="https://m.dianping.com/shopshare/H2q9Aa7xxBbFiher?msource=Appshare2021&utm_source=shop_share&shoptype=30&shopcategoryid=50405&isoversea=0&shareid=mVlzx3trfu_1791655805" target="_blank" rel="noopener noreferrer">大众点评：迦羅纳·泰式古法按摩</a></p>
+        </div>
+      </article>
+
+      <!-- 基诺草药10元泡脚 -->
+      <article class="massage-card">
+        <header class="massage-head">
+          <a class="massage-name" href="https://surl.amap.com/6gqHxGeEbgE" target="_blank" rel="noopener noreferrer">基诺草药泡脚</a>
+          <span class="hours">约 10:00 – 24:00</span>
+        </header>
+        <div class="massage-info">
+          <p><span class="price">💰 泡脚 ¥10 · 泡脚+腿部按摩套餐 ¥40</span></p>
+          <p>✨ 特色：主打基诺山本地草药汤底泡脚，逛完景点暴走之后用来放松；腿部按摩单条腿可按 15-20 分钟，老师傅手法扎实，酸爽解乏，超高性价比。</p>
+          <p>✅ 优点：价格极低，草药泡浴出汗舒缓疲劳；按摩时长充足，大叔手法口碑很好；骑电动车顺路就能打卡。</p>
+          <p>环境：本地平民足疗小店，朴实简约，属于本地人常去的市井小店。去泡脚是 OK 的，其他项目就不推荐了。</p>
+        </div>
+      </article>
+
+    </section>
+
+    <p class="note">到时候可在大众点评挑选，或路边随意找家泡脚店也行。静谷和迦罗纳建议提前预约。</p>
+  </main>
+
+  <footer>10月13日按摩SPA · <a href="../index.html#days">回到完整行程</a></footer>
+  <a class="home-float" href="../index.html" aria-label="返回首页">⌂ 返回首页</a>
+</body>
+
+</html>
