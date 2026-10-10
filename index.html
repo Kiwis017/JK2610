@@ -346,6 +346,21 @@
     }
     .day-body { padding: 20px 22px 22px; }
 
+    .day-tools {
+      margin: 0 0 18px;
+      padding: 13px 15px 15px;
+      border: 1px solid rgba(30, 122, 90, .18);
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, rgba(222, 243, 235, .72), rgba(235, 247, 245, .82));
+    }
+    .day-tools-title {
+      margin: 0;
+      color: var(--rain-700);
+      font-size: 14px;
+      font-weight: 900;
+    }
+    .day-tools .recommendation-actions { margin-top: 9px; }
+
     .tl { position: relative; margin: 0; padding: 0 0 0 26px; list-style: none; }
     .tl::before {
       content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px;
@@ -1290,6 +1305,17 @@
               '</div>' +
             '</div></div>'
           : '';
+        var dayTools = Number(d.n) === 2
+          ? '<section class="day-tools" aria-label="第二天出行小工具">' +
+              '<h4 class="day-tools-title">🧰 出行小工具</h4>' +
+              '<div class="recommendation-actions">' +
+                '<a class="meal-lunch-link" href="./trip-files/pic/didi_bus/滴滴巴士_去程.webp" target="_blank" rel="noopener">🚌 滴滴巴士去程</a>' +
+                '<a class="meal-lunch-link" href="./trip-files/pic/didi_bus/滴滴巴士_回程.webp" target="_blank" rel="noopener">🚌 滴滴巴士回程</a>' +
+                '<a class="meal-lunch-link" href="https://surl.amap.com/7llz4GOLb1L" target="_blank" rel="noopener">📍 上车点导航</a>' +
+                '<a class="meal-lunch-link" href="https://xhslink.cn/o/2Wm3qmDzYJv" target="_blank" rel="noopener">🔎 上车点寻找</a>' +
+              '</div>' +
+            '</section>'
+          : '';
         return '<article class="card day reveal in" id="day-' + d.n + '" data-day="' + d.n + '">' +
           '<div class="day-top">' +
             '<div class="day-badge"><b>D' + d.n + '</b><span>DAY</span></div>' +
@@ -1297,6 +1323,7 @@
             '<span class="day-when">' + esc(d.date) + '</span>' +
           '</div>' +
           '<div class="day-body">' +
+            dayTools +
             '<ul class="tl">' + slots + '</ul>' +
             (mealCards ? '<div class="day-meta">' + mealCards + '</div>' : '') +
           '</div>' +
