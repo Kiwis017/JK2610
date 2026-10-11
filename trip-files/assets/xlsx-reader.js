@@ -43,8 +43,9 @@
     return files;
   }
   function parseSheet(source, sharedStrings) {
-    var doc = parseXml(source), rows = Array.prototype.slice.call(doc.getElementsByTagNameNS('*', 'row'));
-    return rows.map(function (row) {
+    var doc = parseXml(source), rowNodes = Array.prototype.slice.call(doc.getElementsByTagNameNS('*', 'row'));
+    var rowsByNumber = {}, maxRow = 0;
+    rowNodes.forEach(function (row, index) {
       var cells = Array.prototype.slice.call(row.getElementsByTagNameNS('*', 'c')), values = [];
       cells.forEach(function (cell) {
         var col = columnIndex(cell.getAttribute('r'));
@@ -55,8 +56,13 @@
         else if (type === 'b') value = value === '1';
         values[col] = value;
       });
-      return values;
-    }).filter(function (row) { return row.some(function (v) { return v !== undefined && v !== ''; }); });
+      var rowNumber = Number(row.getAttribute('r')) || index + 1;
+      rowsByNumber[rowNumber] = values;
+      maxRow = Math.max(maxRow, rowNumber);
+    });
+    var rows = [];
+    for (var rowNumber = 1; rowNumber <= maxRow; rowNumber++) rows.push(rowsByNumber[rowNumber] || []);
+    return rows;
   }
   async function readWorkbook(file, sheetName) {
     var files = await unzip(file), workbookDoc = parseXml(files['xl/workbook.xml']);
@@ -78,11 +84,13 @@
     var raw = parseSheet(files[sheetPath], ss);
     if (!raw.length) return [];
     var headers = raw[0].map(function (h) { return String(h == null ? '' : h).trim(); });
-    return raw.slice(1).map(function (row) {
+    return raw.slice(1).map(function (row, index) {
       var item = {};
       headers.forEach(function (h, i) { if (h) item[h] = row[i] == null ? '' : row[i]; });
+      item.__row = index + 2;
+      item.__blank = !headers.some(function (h) { return h && String(item[h] == null ? '' : item[h]).trim() !== ''; });
       return item;
-    }).filter(function (item) { return Object.keys(item).some(function (k) { return item[k] !== ''; }); });
+    });
   }
   global.ProjectXlsxReader = { readWorkbook: readWorkbook };
 })(window);

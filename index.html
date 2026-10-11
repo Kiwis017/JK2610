@@ -361,11 +361,9 @@
     }
     .day-tools .recommendation-actions { margin-top: 9px; }
     .day-plan-section {
-      margin-top: 18px; padding: 15px;
-      border: 1px solid var(--line); border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, .72);
+      margin: 0 0 16px;
     }
-    .day-plan-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    .day-plan-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
     .day-plan-tab {
       min-height: 42px; padding: 0 18px; border: 1px solid var(--line);
       border-radius: 999px; background: #fff; color: var(--rain-700);
@@ -375,18 +373,7 @@
       border-color: transparent; color: #fff;
       background: linear-gradient(120deg, var(--rain-700), var(--peacock-500));
     }
-    .day-plan-card {
-      padding: 15px; border: 1px solid var(--line); border-radius: var(--radius-sm);
-      background: #fff; box-shadow: var(--shadow-sm);
-    }
-    .day-plan-card h5 { margin: 0; color: var(--ink); font-size: 16px; font-weight: 900; }
-    .day-plan-time {
-      display: inline-block; margin-top: 9px; padding: 5px 10px;
-      border-radius: 999px; background: var(--orange-100); color: var(--orange-600);
-      font-size: 12.5px; font-weight: 800;
-    }
-    .day-plan-detail { margin: 10px 0 0; color: var(--ink-soft); font-size: 13.8px; line-height: 1.7; }
-    .day-plan-card[hidden] { display: none; }
+    .day-plan-hint { margin: 0 0 8px; color: var(--muted); font-size: 12.5px; }
 
     .tl { position: relative; margin: 0; padding: 0 0 0 26px; list-style: none; }
     .tl::before {
@@ -407,6 +394,9 @@
       color: var(--orange-600); background: var(--orange-100);
       padding: 1px 9px; border-radius: 999px; margin-bottom: 4px;
     }
+    .tl .slot.numeric-time { color: #9a4300; background: #ffedd5; font-size: 13px; font-weight: 950; }
+    .tl li.tl-spacer { height: 12px; padding: 0; }
+    .tl li.tl-spacer::before { display: none; }
     .tl .what { font-weight: 800; color: var(--ink); font-size: 15px; }
     .tl .detail { color: var(--muted); font-size: 13.8px; margin-top: 2px; }
     .tl .highlight {
@@ -1195,10 +1185,15 @@
       return text;
     }
     function daysFromWorkbook(activityRows, mealRows, planRows) {
-      var byDate = {}, dates = [];
+      var byDate = {}, dates = [], currentDate = '';
       activityRows.forEach(function (row) {
         var date = excelDate(row['日期']);
+        if (!date && row.__blank && currentDate && byDate[currentDate]) {
+          byDate[currentDate].slots.push({ spacer: true });
+          return;
+        }
         if (!date) return;
+        currentDate = date;
         if (!byDate[date]) {
           var d = new Date(date + 'T00:00:00Z'), weekdays = ['週日','週一','週二','週三','週四','週五','週六'];
           byDate[date] = { n: dates.length + 1, date: date.slice(5).replace('-', '/') + ' ' + weekdays[d.getUTCDay()],
@@ -1224,7 +1219,7 @@
         day.plans.push({
           label: String(row['方案'] || '').trim(),
           title: title,
-          time: String(row['時間安排'] || '').trim(),
+          time: excelTime(row['時間安排']),
           detail: String(row['行程說明'] || '').trim()
         });
       });
@@ -1322,9 +1317,15 @@
       }
       host.innerHTML = DAYS.map(function (d) {
         var isOct13 = String(d.date).slice(0, 5) === '10/13';
+        var planTabs = (d.plans || []).length > 1
+          ? '<section class="day-plan-section" aria-label="' + esc(d.date) + '整日方案"><p class="day-plan-hint">選擇方案以切換當日完整時間線</p><div class="day-plan-tabs" role="tablist" aria-label="選擇整日行程方案">' +
+            d.plans.map(function (plan, index) {
+              return '<button class="day-plan-tab" type="button" role="tab" aria-selected="' + (index === 0) + '" tabindex="' + (index === 0 ? '0' : '-1') + '" data-plan-index="' + index + '">' + esc(plan.label || ('Plan ' + (index + 1))) + '</button>';
+            }).join('') + '</div></section>' : '';
         var slots = d.slots.map(function (s) {
+          if (s.spacer) return '<li class="tl-spacer" aria-hidden="true"></li>';
           return '<li>' +
-            '<span class="slot">' + esc(s.t) + '</span>' +
+            (s.t ? '<span class="slot' + (/\d/.test(s.t) ? ' numeric-time' : '') + '">' + esc(s.t) + '</span>' : '') +
             '<div class="what">' + esc(s.what) + '</div>' +
             '<div class="detail">' + esc(s.detail) + '</div>' +
             '</li>';
@@ -1348,27 +1349,8 @@
           ? '<div class="meta-item recommendation-panel"><span class="ico">🍽</span><div class="txt"><b>餐食建議</b></div></div>' +
             '<div class="meta-item recommendation-panel"><span class="ico">🎒</span><div class="txt"><b>玩樂放鬆</b></div></div>'
           : '';
-        var planCards = (d.plans || []).length
-          ? '<section class="day-plan-section" aria-label="' + esc(d.date) + '行程方案">' +
-              '<h4 class="day-tools-title">🧭 行程方案</h4>' +
-              '<div class="day-plan-tabs" role="tablist" aria-label="選擇行程方案">' +
-                d.plans.map(function (plan, index) {
-                  var tabId = 'day-plan-tab-' + d.n + '-' + index;
-                  var panelId = 'day-plan-panel-' + d.n + '-' + index;
-                  return '<button class="day-plan-tab" id="' + tabId + '" type="button" role="tab" aria-controls="' + panelId + '" aria-selected="' + (index === 0) + '" tabindex="' + (index === 0 ? '0' : '-1') + '" data-plan-index="' + index + '">' + esc(plan.label || ('Plan ' + (index + 1))) + '</button>';
-                }).join('') +
-              '</div>' +
-              d.plans.map(function (plan, index) {
-                var tabId = 'day-plan-tab-' + d.n + '-' + index;
-                var panelId = 'day-plan-panel-' + d.n + '-' + index;
-                return '<article class="day-plan-card" id="' + panelId + '" role="tabpanel" aria-labelledby="' + tabId + '"' + (index === 0 ? '' : ' hidden') + '>' +
-                  '<h5>' + esc(plan.title) + '</h5>' +
-                  (plan.time ? '<div class="day-plan-time">' + esc(plan.time) + '</div>' : '') +
-                  (plan.detail ? '<p class="day-plan-detail">' + esc(plan.detail) + '</p>' : '') +
-                '</article>';
-              }).join('') +
-            '</section>'
-          : '';
+        var selectedPlan = d.plans && d.plans[0];
+        var planSlot = selectedPlan ? '<li class="plan-timeline-item"><span class="slot numeric-time">' + esc(selectedPlan.time || '') + '</span><div class="what">' + esc(selectedPlan.title) + '</div><div class="detail">' + esc(selectedPlan.detail) + '</div></li>' : '';
         var dayTools = Number(d.n) === 2
           ? '<section class="day-tools" aria-label="第二天出行小工具">' +
               '<h4 class="day-tools-title">🧰 出行小工具</h4>' +
@@ -1398,23 +1380,46 @@
           '</div>' +
           '<div class="day-body">' +
             dayTools +
-            '<ul class="tl">' + slots + '</ul>' +
-            planCards +
+            planTabs +
+            '<ul class="tl">' + slots + planSlot + '</ul>' +
             (mealCards ? '<div class="day-meta">' + mealCards + '</div>' : '') +
           '</div>' +
         '</article>';
       }).join('');
-      Array.prototype.forEach.call(host.querySelectorAll('.day-plan-section'), function (section) {
+      Array.prototype.forEach.call(host.querySelectorAll('.day'), function (dayCard) {
+        var section = dayCard.querySelector('.day-plan-section');
+        if (!section) return;
         var tabs = Array.prototype.slice.call(section.querySelectorAll('[role="tab"]'));
-        var panels = Array.prototype.slice.call(section.querySelectorAll('[role="tabpanel"]'));
+        var dayData = DAYS.filter(function (day) { return String(day.n) === dayCard.getAttribute('data-day'); })[0];
+        var timeline = dayCard.querySelector('.tl');
+        var commonTimeline = Array.prototype.filter.call(timeline.children, function (item) {
+          return !item.classList.contains('plan-timeline-item');
+        }).map(function (item) { return item.outerHTML; }).join('');
+        function timelineWithPlan(plan) {
+          var planItem = '<li class="plan-timeline-item"><span class="slot numeric-time">' + esc(plan.time || '') + '</span><div class="what">' + esc(plan.title) + '</div><div class="detail">' + esc(plan.detail) + '</div></li>';
+          var planMinutes = String(plan.time || '').match(/(?:^|\D)(\d{1,2}):(\d{2})/);
+          if (!planMinutes) return commonTimeline + planItem;
+          var target = Number(planMinutes[1]) * 60 + Number(planMinutes[2]);
+          var originals = Array.prototype.filter.call(timeline.children, function (item) { return !item.classList.contains('plan-timeline-item'); });
+          var insertAt = originals.length;
+          originals.some(function (item, index) {
+            var label = item.querySelector('.slot'), match = label && label.textContent.match(/(\d{1,2}):(\d{2})/);
+            if (match && Number(match[1]) * 60 + Number(match[2]) > target) { insertAt = index; return true; }
+            return false;
+          });
+          var html = originals.map(function (item) { return item.outerHTML; });
+          html.splice(insertAt, 0, planItem);
+          return html.join('');
+        }
         tabs.forEach(function (tab, index) {
           tab.addEventListener('click', function () {
             tabs.forEach(function (otherTab, otherIndex) {
               var selected = otherIndex === index;
               otherTab.setAttribute('aria-selected', String(selected));
               otherTab.tabIndex = selected ? 0 : -1;
-              panels[otherIndex].hidden = !selected;
             });
+            var plan = dayData.plans[index];
+            timeline.innerHTML = timelineWithPlan(plan);
           });
           tab.addEventListener('keydown', function (event) {
             if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
@@ -1424,6 +1429,7 @@
             tabs[nextIndex].click();
           });
         });
+        tabs[0].click();
       });
     }
     // ── 渲染：實用貼士 ──
