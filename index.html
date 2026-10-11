@@ -415,6 +415,9 @@
       box-shadow: 0 4px 12px rgba(30, 122, 90, .18);
     }
     .meal-lunch-link:focus-visible { outline: 3px solid var(--orange-600); outline-offset: 3px; }
+    .meal-lunch-link.tool-secondary {
+      color: var(--ink-soft); background: #edf2f1; box-shadow: none; font-weight: 750;
+    }
     .meta-item.recommendation-panel {
       background: var(--orange-100);
       border-color: rgba(224, 123, 57, .26);
@@ -1363,10 +1366,20 @@
           ? '<section class="day-tools" aria-label="第三天出行小工具">' +
               '<h4 class="day-tools-title">🧰 出行小工具</h4>' +
               '<div class="recommendation-actions">' +
-                '<a class="meal-lunch-link" href="https://surl.amap.com/18OPYjJ4Nfi5" target="_blank" rel="noopener">🚄 导航到版纳高铁站</a>' +
                 '<a class="meal-lunch-link" href="https://surl.amap.com/1EoczWOqp9XH" target="_blank" rel="noopener">🚗 导航至神州租车·滨江双塔服务点</a>' +
                 '<a class="meal-lunch-link" href="https://surl.amap.com/2DxkbI0eR4rG" target="_blank" rel="noopener">☕ 导航到炬点咖啡庄园</a>' +
-                '<a class="meal-lunch-link" href="./trip-files/pic/banner-puer/版纳-普洱高铁时刻表.webp" target="_blank" rel="noopener">🚆 版纳—普洱高铁时刻表（07:00～15:00）</a>' +
+                '<a class="meal-lunch-link tool-secondary" href="https://surl.amap.com/18OPYjJ4Nfi5" target="_blank" rel="noopener">🚄 导航到版纳高铁站</a>' +
+                '<a class="meal-lunch-link tool-secondary" href="./trip-files/pic/banner-puer/版纳-普洱高铁时刻表.webp" target="_blank" rel="noopener">🚆 版纳—普洱高铁时刻表（07:00～15:00）</a>' +
+                '<a class="meal-lunch-link tool-secondary" href="./trip-files/puer_drink.html">🍹 普洱饮品推荐</a>' +
+              '</div>' +
+            '</section>'
+          : Number(d.n) === 4
+          ? '<section class="day-tools" aria-label="第四天出行导航">' +
+              '<h4 class="day-tools-title">🧰 出行导航</h4>' +
+              '<div class="recommendation-actions">' +
+                '<a class="meal-lunch-link" href="https://surl.amap.com/2JlYO0my1B9uX" target="_blank" rel="noopener">🌿 太阳河国家公园导航</a>' +
+                '<a class="meal-lunch-link" href="https://surl.amap.com/2JvaUfAi1n1dN" target="_blank" rel="noopener">☕ 小凹子咖啡庄园导航</a>' +
+                '<a class="meal-lunch-link" href="https://surl.amap.com/2JAWM9WShaMI" target="_blank" rel="noopener">🌱 有风咖谷导航</a>' +
               '</div>' +
             '</section>'
           : '';

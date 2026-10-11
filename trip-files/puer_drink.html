@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17684f">
+  <title>普洱饮品推荐 · 西双版纳行程</title>
+  <style>
+    :root {
+      --green: #17684f;
+      --green-dark: #124f40;
+      --teal: #147681;
+      --orange: #db8244;
+      --ink: #263a33;
+      --muted: #718079;
+      --paper: #f4f8f4;
+      --card: #fff;
+      --line: #dce8df;
+      --shadow: 0 12px 34px rgba(27, 73, 54, .09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--ink);
+      background: radial-gradient(circle at 90% 8%, rgba(212, 235, 222, .75), transparent 28rem), var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .topbar {
+      min-height: 66px;
+      padding: env(safe-area-inset-top) max(5vw, env(safe-area-inset-right)) 0 max(5vw, env(safe-area-inset-left));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, .92);
+      border-bottom: 1px solid rgba(220, 232, 223, .9);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 900;
+      color: var(--green-dark);
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 800;
+      background: #fff;
+      white-space: nowrap;
+    }
+
+    .wrap {
+      width: min(1000px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      margin: 34px auto 24px;
+      padding: clamp(28px, 6vw, 58px);
+      border-radius: 28px;
+      color: #fff;
+      background: linear-gradient(120deg, #15583f, #187b78);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "🥥";
+      position: absolute;
+      right: 7%;
+      bottom: -35px;
+      font-size: clamp(110px, 20vw, 190px);
+      opacity: .13;
+      transform: rotate(-12deg);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid rgba(255, 255, 255, .35);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .1);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .8px;
+    }
+
+    h1 {
+      max-width: 750px;
+      margin: 18px 0 10px;
+      font-size: clamp(31px, 6vw, 50px);
+      line-height: 1.12;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 0;
+      color: rgba(255, 255, 255, .86);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .tab-bar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      margin: 20px auto 18px;
+      padding: 8px;
+      border: 1px solid rgba(220, 232, 223, .95);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .94);
+      box-shadow: 0 8px 24px rgba(27, 73, 54, .08);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    .tab-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .tab-button {
+      min-height: 48px;
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--green-dark);
+      font: inherit;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: color .2s, background .2s, box-shadow .2s;
+    }
+
+    .tab-button[aria-selected="true"] {
+      color: #fff;
+      background: linear-gradient(120deg, var(--green-dark), var(--teal));
+      box-shadow: 0 5px 14px rgba(18, 79, 64, .2);
+    }
+
+    .tab-button:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 2px;
+    }
+
+    .tab-panel[hidden] {
+      display: none !important;
+    }
+
+    .panel-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      margin: 24px auto 14px;
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: clamp(22px, 4vw, 28px);
+    }
+
+    .panel-heading span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .store-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin: 0 auto 28px;
+    }
+
+    .store-card {
+      min-width: 0;
+      padding: clamp(18px, 4vw, 26px);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .store-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+    }
+
+    .store-number {
+      flex: none;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: #76533a;
+      background: #fff1e2;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .store-title-wrap {
+      min-width: 0;
+    }
+
+    .store-card h3 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: clamp(19px, 3vw, 23px);
+      line-height: 1.4;
+    }
+
+    .store-kind {
+      display: inline-block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    .store-copy {
+      margin: 14px 0 0 55px;
+      font-size: 14.5px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .store-copy p {
+      margin: 0;
+    }
+
+    .store-copy p+p {
+      margin-top: 9px;
+    }
+
+    .store-rec {
+      padding: 10px 12px;
+      border-radius: 12px;
+    }
+
+    .store-rec.good-highlight {
+      color: #76533a;
+      background: #fff2d5;
+      border: 1px solid #f2d79b;
+    }
+
+    .store-rec.avoid-highlight {
+      color: #315b46;
+      background: #eaf5ec;
+      border: 1px solid #c9e4ce;
+    }
+
+    .store-rec strong {
+      color: #9a542b;
+    }
+
+    .avoid-highlight strong {
+      color: #356c4a;
+    }
+
+    .drink-highlight {
+      padding: 0 3px;
+      border-radius: 4px;
+      color: #754516;
+      background: #ffd978;
+      font-weight: 850;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    footer {
+      padding: 24px 18px max(34px, env(safe-area-inset-bottom));
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    footer a {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .home-float {
+      position: fixed;
+      z-index: 20;
+      left: max(16px, env(safe-area-inset-left));
+      right: auto;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 48px;
+      padding: 0 17px;
+      border: 1px solid rgba(255, 255, 255, .5);
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(120deg, var(--green-dark), var(--teal));
+      box-shadow: 0 8px 24px rgba(18, 79, 64, .28);
+      font-size: 14px;
+      font-weight: 900;
+      text-decoration: none;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    .home-float:focus-visible,
+    .back:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 820px) {
+      .topbar {
+        padding-right: max(18px, env(safe-area-inset-right));
+        padding-left: max(18px, env(safe-area-inset-left));
+      }
+
+      .wrap {
+        width: calc(100% - 28px);
+      }
+
+      .hero {
+        margin-top: 20px;
+        border-radius: 22px;
+      }
+
+      .panel-heading {
+        display: block;
+      }
+
+      .panel-heading span {
+        display: block;
+        margin-top: 5px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .topbar {
+        min-height: 0;
+        padding-top: max(10px, env(safe-area-inset-top));
+        padding-bottom: 10px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .brand {
+        font-size: 14px;
+      }
+
+      .wrap {
+        width: calc(100% - 24px);
+      }
+
+      .hero {
+        padding: 26px 22px;
+      }
+
+      .store-copy {
+        margin-left: 0;
+      }
+
+      .tab-button {
+        font-size: 14px;
+        padding: 9px 7px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">西双版纳 · 普洱 7天6晚</a>
+    <a class="back" href="../index.html#days">← 返回每日行程</a>
+  </header>
+  <main class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow">普洱 <span>·</span> 饮品地图</div>
+      <h1 id="page-title">普洱饮品推荐</h1>
+      <p>按非咖啡类和咖啡类浏览。点击店名可跳转高德地图；有大众点评链接的店铺也提供独立入口。橙黄色标出特色与好评，绿色标出差评和避坑提醒。</p>
+    </section>
+    <nav class="tab-bar" aria-label="饮品推荐分类">
+      <div class="tab-list" role="tablist" aria-label="选择饮品类别">
+        <button class="tab-button" id="tab-noncoffee" type="button" role="tab" aria-controls="panel-noncoffee" aria-selected="true">🍹 非咖啡类</button>
+        <button class="tab-button" id="tab-coffee" type="button" role="tab" aria-controls="panel-coffee" aria-selected="false" tabindex="-1">☕ 咖啡类</button>
+      </div>
+    </nav>
+
+    <section class="tab-panel" id="panel-noncoffee" role="tabpanel" aria-labelledby="tab-noncoffee">
+      <div class="panel-heading"><h2>非咖啡类</h2><span>3 家精选 · 酒类排在首位</span></div>
+      <div class="store-list">
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">01</span><div class="store-title-wrap"><h3><a href="https://surl.amap.com/2LQD2EnQDgbY" target="_blank" rel="noopener noreferrer">云男蒸馏所</a></h3><span class="store-kind">本土植物蒸馏酒 · 12:00–19:00</span></div></div>
+          <div class="store-copy">
+            <p class="store-rec good-highlight"><strong>特色与好评：</strong>主打云南本土植物蒸馏金酒，按“根、叶、花、果、秘”分类，使用普洱茶、松针、木姜子、玫瑰、菌子等当地香料。可选品鉴套餐（198元/两位，6种味道），也可DIY酿酒（约480元，带走2瓶500ml）。<span class="drink-highlight">女武士梅酒</span>醇厚温润，适合新手；<span class="drink-highlight">根金酒加汤力水和冰块</span>清爽。氛围像在雨林里酿酒，老板和工作人员热情，愿意交流酿酒知识。</p>
+            <p class="store-rec avoid-highlight"><strong>差评 / 避坑：</strong>酒精度数偏高，纯饮可能觉得烈；晚上7点关门，建议提早前往。位置在山里，建议打车或提前规划路线。⚠️ DIY酿酒需提前电话预约。</p>
+          </div>
+          <div class="store-actions"><a href="https://m.dianping.com/shopshare/G2Ki5H9i1MD2yZWy?msource=Appshare2021&amp;utm_source=shop_share&amp;shoptype=30&amp;shopcategoryid=50122&amp;isoversea=0&amp;shareid=rYAUhLZkGG_1791728685" target="_blank" rel="noopener noreferrer">大众点评：云男蒸馏所 ↗</a></div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">02</span><div class="store-title-wrap"><h3><a href="https://surl.amap.com/2L1tlGS2WdoY" target="_blank" rel="noopener noreferrer">四月浅草风</a></h3><span class="store-kind">山野水果风味 · 10:00–22:00</span></div></div>
+          <div class="store-copy">
+            <p class="store-rec good-highlight"><strong>特色与好评：</strong>普洱限定饮品，用料扎实、水果品质好。<span class="drink-highlight">龙眼马蹄冰</span>半杯都是料，含龙眼肉、马蹄爆珠和桂花冻冻，龙眼风味足、口感清爽；<span class="drink-highlight">山野酸木瓜</span>酸爽开胃，适合搭配烧烤或炒菜解腻。脆青芒、滇橄榄柠檬也受欢迎，不少游客说好喝到想打包带走。</p>
+            <p class="store-rec avoid-highlight"><strong>差评 / 避坑：</strong>部分饮品偏甜，建议少糖或不另外加糖。初榨红石榴汁即使少糖也偏甜，石榴味不明显；山野酸木瓜非常酸且茶味浓，不爱酸慎点。外卖容易化，建议堂食。</p>
+          </div>
+          <div class="store-actions"><a href="https://m.dianping.com/shopinfo/l8JtnIjUzzxuWoKG?msource=Appshare2021&amp;utm_source=shop_share&amp;shoptype=10&amp;shopcategoryid=34237&amp;cityid=275&amp;isoversea=0" target="_blank" rel="noopener noreferrer">大众点评：四月浅草风 ↗</a></div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">03</span><div class="store-title-wrap"><h3><a href="https://surl.amap.com/2MUQJcrQ1m2XB" target="_blank" rel="noopener noreferrer">寅乐萃</a></h3><span class="store-kind">云南连锁 · 特色茶饮</span></div></div>
+          <div class="store-copy">
+            <p class="store-rec good-highlight"><strong>特色与好评：</strong>云南本地连锁，主打糯香和竹香茶饮。招牌<span class="drink-highlight">糯香鲜奶米布茶</span>带淡淡米香，口感像更轻盈的麻薯，搭配鲜奶顺滑不腻；青芒罗勒冰茶清爽并带草本香气。价格亲民，无糖去冰喝起来刚好。</p>
+            <p class="store-rec avoid-highlight"><strong>差评 / 避坑：</strong>除糯香米布茶外，其他饮品评价比较普通；米布口感特别，外地游客可能不习惯，建议先点一杯尝尝。</p>
+          </div>
+          <div class="store-actions"><a href="https://m.dianping.com/shopinfo/HaqwLkEO9E4YIRTl?msource=Appshare2021&amp;utm_source=shop_share&amp;shoptype=10&amp;shopcategoryid=34237&amp;cityid=275&amp;isoversea=0" target="_blank" rel="noopener noreferrer">大众点评：寅乐萃 ↗</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-coffee" role="tabpanel" aria-labelledby="tab-coffee" hidden>
+      <div class="panel-heading"><h2>咖啡类</h2><span>4 家精选</span></div>
+      <div class="store-list">
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">01</span><div class="store-title-wrap"><h3><a href="https://surl.amap.com/2MenWaZUn056" target="_blank" rel="noopener noreferrer">屿岸咖啡</a></h3><span class="store-kind">德庭酒店（茶山店）一层</span></div></div>
+          <div class="store-copy">
+            <p class="store-rec good-highlight"><strong>特色与好评：</strong>被热带雨林绿植环绕，园区定时喷水雾，像清迈小众庭院。环境很出片，10点前几乎没有游客。店员热情，可选北归咖啡的本地精品豆做手冲（加10元）；住客有折扣。</p>
+            <p class="store-rec avoid-highlight"><strong>差评 / 避坑：</strong>咖啡本身评价一般，更偏向打卡拍照。地图和点评可能搜不到店名，直接搜“德庭酒店”更准确。高峰期可能有家庭客群，安静氛围会受影响。</p>
+          </div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">02</span><div class="store-title-wrap"><h3><a href="https://uri.amap.com/search?keyword=%E5%B9%B8%E4%B9%9F%E5%92%96%E5%95%A1&amp;city=%E6%99%AE%E6%B4%B1&amp;view=list&amp;callnative=1" target="_blank" rel="noopener noreferrer">幸也咖啡</a></h3><span class="store-kind">云南特色风味连锁 · 08:00–20:00</span></div></div>
+          <div class="store-copy">
+            <p class="store-rec good-highlight"><strong>特色与好评：</strong>云南特色风味特调。招牌<span class="drink-highlight">木姜子冷萃</span>融合木姜子辛香与柠檬清冽；<span class="drink-highlight">香柏木松冷萃</span>现场熏制，带烟熏风味；还有酸木瓜特调、墨红玫瑰拿铁。玫瑰乳扇芝士蛋糕也很搭。店员会介绍每杯咖啡，挂耳包和手冲也值得尝试。</p>
+            <p class="store-rec avoid-highlight"><strong>差评 / 避坑：</strong>木姜子口味两极分化，不习惯草本香料可能会不喜欢；热饮木姜子拿铁略涩，建议选冰款。部分门店（如农贸市场店）环境不如巡津街店。</p>
+          </div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">03</span><div class="store-title-wrap"><h3><a href="https://surl.amap.com/2MyYvoZo1tfkT" target="_blank" rel="noopener noreferrer">观山止戈（李现同款）</a></h3><span class="store-kind">社区咖啡小院 · 10:00–18:00</span></div></div>
+          <div class="store-copy">
+            <p class="store-rec good-highlight"><strong>特色与好评：</strong>老板自己烘豆，咖啡统一25元，性价比高。<span class="drink-highlight">耶加雪菲手冲、花魁手冲</span>入口带酸、回甘明显，花果香浓；牛乳茶的奶泡也有普洱茶香。小院安静古朴，适合发呆，老板和老板娘朴实自在。</p>
+            <p class="store-rec avoid-highlight"><strong>差评 / 避坑：</strong>门口有坡、路窄不好停车，建议打车。空间不大，节假日可能拥挤；手冲偏酸，不习惯酸味可选Dirty或澳白。</p>
+          </div>
+          <div class="store-actions"><a href="https://m.dianping.com/shopinfo/H4VQtRHuxPOSykRq?msource=Appshare2021&amp;utm_source=shop_share&amp;shoptype=10&amp;shopcategoryid=132&amp;cityid=275&amp;isoversea=0" target="_blank" rel="noopener noreferrer">大众点评：观山止戈 ↗</a></div>
+        </article>
+        <article class="store-card">
+          <div class="store-head"><span class="store-number">04</span><div class="store-title-wrap"><h3><a href="https://surl.amap.com/2ML4Pka21m9hm" target="_blank" rel="noopener noreferrer">简聿咖啡</a></h3><span class="store-kind">普洱特调咖啡 · 09:30–18:00</span></div></div>
+          <div class="store-copy">
+            <p class="store-rec good-highlight"><strong>特色与好评：</strong>公园路附近的特调咖啡排队店。招牌<span class="drink-highlight">黄油Dirty</span>油脂丰富、香醇；<span class="drink-highlight">五个秋天</span>是清爽果咖搭配抹茶奶盖，桂花香浓。隔壁面包店适合一起逛，老板和店员会认真介绍风味。</p>
+            <p class="store-rec avoid-highlight"><strong>差评 / 避坑：</strong>店内空间小，高峰期常没座位；黄油Dirty有人觉得偏咸，可配冰水。服务评价不一，店外偶有二手烟。</p>
+          </div>
+          <div class="store-actions"><a href="https://m.dianping.com/shopinfo/k79cbKEMYXKLXbVN?msource=Appshare2021&amp;utm_source=shop_share&amp;shoptype=10&amp;shopcategoryid=132&amp;cityid=275&amp;isoversea=0" target="_blank" rel="noopener noreferrer">大众点评：简聿咖啡 ↗</a></div>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer>普洱饮品推荐 · <a href="../index.html#days">回到完整行程</a></footer>
+  <a class="home-float" href="../index.html" aria-label="返回首页">⌂ 返回首页</a>
+  <script>
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
+      function activate(tab, updateHash) {
+        tabs.forEach(function (item) {
+          var active = item === tab;
+          item.setAttribute('aria-selected', String(active));
+          item.tabIndex = active ? 0 : -1;
+        });
+        panels.forEach(function (panel) { panel.hidden = panel.id !== tab.getAttribute('aria-controls'); });
+        if (updateHash) history.replaceState(null, '', tab.id === 'tab-coffee' ? '#coffee' : '#non-coffee');
+      }
+      tabs.forEach(function (tab, index) {
+        tab.addEventListener('click', function () { activate(tab, true); });
+        tab.addEventListener('keydown', function (event) {
+          var next = index;
+          if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          tabs[next].focus();
+          activate(tabs[next], true);
+        });
+      });
+      function activateFromHash() {
+        var tab = location.hash === '#coffee' ? tabs[1] : tabs[0];
+        activate(tab, false);
+      }
+      window.addEventListener('hashchange', activateFromHash);
+      activateFromHash();
+    })();
+  </script>
+</body>
+
+</html>
