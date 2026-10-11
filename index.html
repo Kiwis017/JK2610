@@ -1306,7 +1306,9 @@
         .replace(/"/g, '&quot;');
     }
     function richText(s) {
-      return esc(s).replace(/\d+(?:[.:：\-–—~～/]\d+)*/g, '<strong>$&</strong>');
+      return esc(s).replace(/&(?:amp|lt|gt|quot);|\d+(?:[.:：\-–—~～/]\d+)*|[A-Za-z]+(?:[-'][A-Za-z]+)*/g, function (token) {
+        return token.charAt(0) === '&' ? token : '<strong>' + token + '</strong>';
+      });
     }
 
     function dayTimelineHTML(day, selectedPlan) {
@@ -1352,6 +1354,13 @@
           ? '<div class="meta-item recommendation-panel"><span class="ico">🍽</span><div class="txt"><b>餐食建議</b>' +
               '<div class="recommendation-actions">' +
                 '<a class="meal-lunch-link" href="./trip-files/puer_food.html">🍲 普洱美食推薦</a>' +
+                '<a class="meal-lunch-link" href="./trip-files/puer_citywalk.html">🚶 普洱 Citywalk</a>' +
+                '<a class="meal-lunch-link" href="./trip-files/puer_drink.html">🍹 普洱飲品推薦</a>' +
+              '</div></div></div>'
+          : dayNumber === 4
+          ? '<div class="meta-item recommendation-panel"><span class="ico">🍽</span><div class="txt"><b>餐食建議</b>' +
+              '<div class="recommendation-actions">' +
+                '<a class="meal-lunch-link" href="./trip-files/puer_food.html">🍲 普洱美食推薦</a>' +
                 '<a class="meal-lunch-link" href="./trip-files/puer_drink.html">🍹 普洱飲品推薦</a>' +
               '</div></div></div>'
           : '';
@@ -1382,6 +1391,14 @@
                 '<a class="meal-lunch-link" href="https://surl.amap.com/2JlYO0my1B9uX" target="_blank" rel="noopener">🌿 太阳河国家公园导航</a>' +
                 '<a class="meal-lunch-link" href="https://surl.amap.com/2JvaUfAi1n1dN" target="_blank" rel="noopener">☕ 小凹子咖啡庄园导航</a>' +
                 '<a class="meal-lunch-link" href="https://surl.amap.com/2JAWM9WShaMI" target="_blank" rel="noopener">🌱 有风咖谷导航</a>' +
+              '</div>' +
+            '</section>'
+          : Number(d.n) === 5
+          ? '<section class="day-tools" aria-label="第五天出行小工具">' +
+              '<h4 class="day-tools-title">🧰 出行小工具</h4>' +
+              '<div class="recommendation-actions">' +
+                '<a class="meal-lunch-link" href="https://surl.amap.com/1ekvnHs1kdHZ" target="_blank" rel="noopener">🚌 導航到思茅客運站（五一站）</a>' +
+                '<a class="meal-lunch-link tool-secondary" href="./trip-files/pic/ticket.webp" target="_blank" rel="noopener">🎫 查看車票</a>' +
               '</div>' +
             '</section>'
           : '';
