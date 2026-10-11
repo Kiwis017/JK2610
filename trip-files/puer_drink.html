@@ -33,7 +33,7 @@
       min-width: 320px;
       margin: 0;
       color: var(--ink);
-      background: radial-gradient(ellipse at 8% 0%, rgba(214, 234, 219, .68), transparent 30rem), var(--paper);
+      background: var(--paper);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
@@ -90,8 +90,8 @@
       padding: clamp(30px, 6vw, 66px);
       border-radius: 30px;
       color: #fff;
-      background: linear-gradient(118deg, #124f40 0%, #17684f 56%, #16818a 100%);
-      box-shadow: 0 20px 48px rgba(20, 77, 60, .18);
+      background: #17684f;
+      box-shadow: 0 12px 30px rgba(27, 73, 54, .1);
     }
 
     .hero::after {
@@ -168,8 +168,8 @@
 
     .tab-button[aria-selected="true"] {
       color: #fff;
-      background: linear-gradient(120deg, var(--green-dark), var(--teal));
-      box-shadow: 0 5px 14px rgba(18, 79, 64, .2);
+      background: var(--green-dark);
+      box-shadow: none;
     }
 
     .tab-button:focus-visible {
@@ -205,7 +205,7 @@
 
     .store-list {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
       align-items: stretch;
       gap: 18px;
       margin: 0 auto 42px;
@@ -217,16 +217,10 @@
       grid-template-columns: minmax(0, 1fr);
       align-content: start;
       padding: clamp(19px, 3vw, 26px);
-      border: 1px solid #e0e8df;
-      border-radius: 22px;
+      border: 1px solid #e1e7e0;
+      border-radius: 16px;
       background: var(--card);
-      box-shadow: 0 8px 26px rgba(27, 73, 54, .06);
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-
-    .store-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 34px rgba(27, 73, 54, .11);
+      box-shadow: 0 3px 12px rgba(27, 73, 54, .035);
     }
 
     .store-head {
@@ -243,9 +237,9 @@
       height: 46px;
       display: grid;
       place-items: center;
-      border-radius: 15px;
-      color: #fff;
-      background: linear-gradient(145deg, #e7a24c, #d5783d);
+      border-radius: 13px;
+      color: #526b5d;
+      background: #edf2ec;
       font-size: 13px;
       font-weight: 900;
     }
@@ -277,7 +271,7 @@
       padding: 4px 9px;
       border-radius: 999px;
       color: #65776e;
-      background: #f0f4ef;
+      background: #f3f5f2;
       font-size: 12px;
       font-weight: 700;
       line-height: 1.55;
@@ -285,8 +279,8 @@
 
     .store-copy {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-columns: 1fr;
+      gap: 8px;
       margin: 19px 0 0;
       font-size: 13.5px;
       line-height: 1.72;
@@ -309,14 +303,14 @@
 
     .store-rec.good-highlight {
       color: #76533a;
-      background: #fff5df;
-      border-color: #f0d89e;
+      background: #fff8e9;
+      border-color: #f1e4c7;
     }
 
     .store-rec.avoid-highlight {
       color: #315b46;
-      background: #eff7ef;
-      border-color: #cfe3d0;
+      background: #f3f7f3;
+      border-color: #dae7dc;
     }
 
     .store-rec strong {
@@ -343,10 +337,10 @@
       align-items: center;
       min-height: 38px;
       padding: 0 13px;
-      border: 1px solid #cce0d1;
+      border: 1px solid #dbe5dc;
       border-radius: 999px;
-      color: var(--green-dark);
-      background: #f5faf5;
+      color: #405c4c;
+      background: #f8faf7;
       font-size: 12px;
       font-weight: 850;
       text-decoration: none;
@@ -354,15 +348,15 @@
     }
 
     .store-actions a:hover {
-      border-color: #99c5a7;
-      background: #eaf5ec;
+      border-color: #b9cdbd;
+      background: #eff4ef;
     }
 
     .drink-highlight {
       padding: 0 3px;
       border-radius: 4px;
       color: #754516;
-      background: #ffd978;
+      background: #ffe8ad;
       font-weight: 850;
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
@@ -395,8 +389,8 @@
       border: 1px solid rgba(255, 255, 255, .5);
       border-radius: 999px;
       color: #fff;
-      background: linear-gradient(120deg, var(--green-dark), var(--teal));
-      box-shadow: 0 8px 24px rgba(18, 79, 64, .28);
+      background: var(--green-dark);
+      box-shadow: 0 6px 16px rgba(18, 79, 64, .18);
       font-size: 14px;
       font-weight: 900;
       text-decoration: none;
@@ -428,10 +422,6 @@
       .store-list {
         grid-template-columns: 1fr;
         gap: 14px;
-      }
-
-      .store-copy {
-        grid-template-columns: 1fr 1fr;
       }
 
       .panel-heading {

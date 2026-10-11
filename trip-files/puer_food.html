@@ -49,12 +49,11 @@
     .eyebrow { display: inline-flex; gap: 8px; padding: 7px 12px; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; background: rgba(255,255,255,.1); font-size: 12px; font-weight: 900; letter-spacing: .8px; }
     h1 { max-width: 700px; margin: 18px 0 10px; font-size: clamp(32px, 6vw, 52px); line-height: 1.12; letter-spacing: -.04em; }
     .hero p { max-width: 680px; margin: 0; color: rgba(255,255,255,.86); line-height: 1.8; font-size: 15px; }
-    .category-nav { display: flex; flex-wrap: wrap; gap: 9px; margin: 0 0 25px; }
-    .category-nav a {
-      display: inline-flex; align-items: center; min-height: 40px; padding: 0 15px; border: 1px solid #dce8df;
-      border-radius: 999px; color: var(--green-dark); background: rgba(255,255,255,.85); font-size: 13px; font-weight: 850; text-decoration: none;
-    }
-    .category-nav a:hover { border-color: #a8cbb2; background: #edf6ee; }
+    .category-nav { position: sticky; top: 0; z-index: 20; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 0 0 25px; padding: 6px; border: 1px solid #e0e8df; border-radius: 15px; background: rgba(255,255,255,.94); box-shadow: 0 6px 18px rgba(27,73,54,.06); backdrop-filter: blur(12px); }
+    .category-nav button { min-height: 42px; padding: 8px 12px; border: 0; border-radius: 10px; color: #52665b; background: transparent; font: inherit; font-size: 13px; font-weight: 850; cursor: pointer; }
+    .category-nav button[aria-selected="true"] { color: #fff; background: var(--green-dark); }
+    .category-nav button:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+    .food-panel[hidden] { display: none !important; }
     .section-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; margin: 34px auto 16px; padding: 0 0 12px; border-bottom: 1px solid #dce6da; scroll-margin-top: 16px; }
     .section-head h2 { margin: 0; color: var(--green-dark); font-size: clamp(23px, 4vw, 30px); letter-spacing: -.02em; }
     .section-head p { margin: 0; color: var(--muted); font-size: 13px; }
@@ -88,7 +87,7 @@
       min-height: 280px; overflow: hidden; border-radius: 15px; background: #f1f4ef;
     }
     .photo-link img { display: block; width: 100%; height: 100%; min-height: 280px; max-height: 370px; object-fit: contain; object-position: center; }
-    .photo-link:focus-visible, .back:focus-visible, .category-nav a:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+    .photo-link:focus-visible, .back:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
     .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
     .links a { display: inline-flex; align-items: center; min-height: 37px; padding: 0 13px; border: 1px solid #cce0d1; border-radius: 999px; color: var(--green-dark); background: #f5faf5; font-size: 12px; font-weight: 850; text-decoration: none; }
     .links a:hover { border-color: #99c5a7; background: #eaf5ec; }
@@ -120,8 +119,8 @@
       .brand { font-size: 14px; }
       .wrap { width: calc(100% - 32px); }
       .hero { padding: 26px 22px; }
-      .category-nav { gap: 7px; }
-      .category-nav a { min-height: 37px; padding: 0 12px; font-size: 12px; }
+      .category-nav { gap: 4px; padding: 5px; }
+      .category-nav button { min-height: 39px; padding: 7px 5px; font-size: 12px; }
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .restaurant-card { transition: none; } }
   </style>
@@ -137,16 +136,18 @@
       <h1 id="page-title">普洱美食推薦</h1>
       <p>從野生菌農家菜、深夜粉麵到現烤糕點，按類別挑選。點擊店名開啟高德地圖，照片可點開查看原圖。</p>
     </section>
-    <nav class="category-nav" aria-label="美食類別">
-      <a href="#dishes">🍲 點菜類</a><a href="#noodles">🍜 粉麵類</a><a href="#snacks">🥮 小吃類</a>
+    <nav class="category-nav" role="tablist" aria-label="美食類別">
+      <button id="tab-dishes" type="button" role="tab" aria-controls="panel-dishes" aria-selected="true">🍲 點菜類</button>
+      <button id="tab-noodles" type="button" role="tab" aria-controls="panel-noodles" aria-selected="false" tabindex="-1">🍜 粉麵類</button>
+      <button id="tab-snacks" type="button" role="tab" aria-controls="panel-snacks" aria-selected="false" tabindex="-1">🥮 小吃類</button>
     </nav>
 
-    <section aria-labelledby="dishes">
+    <section class="food-panel" id="panel-dishes" role="tabpanel" aria-labelledby="tab-dishes">
       <div class="section-head"><h2 id="dishes">🍲 點菜類</h2><p>4 家餐館 · 野生菌、農家菜與地方風味</p></div>
       <div class="restaurant-grid">
         <article class="restaurant-card">
           <header class="restaurant-card-head"><a class="restaurant-name" href="https://surl.amap.com/2QiywWEenbkV" target="_blank" rel="noopener noreferrer"><span class="restaurant">樹下1993</span></a><div class="pills"><span class="hours">11:00–21:00</span><span class="price">人均 ¥59</span></div></header>
-          <a class="photo-link" href="./pic/puer_food/树下1993.png" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/树下1993.png" width="1206" height="2622" loading="lazy" alt="樹下1993 菜品照片，點擊查看原圖"></a>
+          <a class="photo-link" href="./pic/puer_food/树下1993.webp" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/树下1993.webp" width="1206" height="2622" loading="lazy" alt="樹下1993 菜品照片，點擊查看原圖"></a>
           <div class="restaurant-details">
             <p class="rec good"><strong>特色與好評</strong>環境乾淨清爽的「漂亮飯」，適合拍照。<span class="food-highlight">百香果牛肉</span>酸甜開胃，<span class="food-highlight">蜂蜜辣子雞</span>很下飯，<span class="food-highlight">油嗆雙拼</span>也是招牌。擺盤好看，蜂蜜辣子雞味道驚艷，百香果牛肉風味獨特。</p>
             <p class="rec avoid"><strong>差評 / 避坑</strong>有顧客覺得服務較敷衍，需要主動要水；上菜慢，有時菜品售罄。整體口味中規中矩、價格相對偏高，若主要為吃飯而來，可能覺得性價比一般。</p>
@@ -155,7 +156,7 @@
         </article>
         <article class="restaurant-card">
           <header class="restaurant-card-head"><a class="restaurant-name" href="https://surl.amap.com/2QoIHbjo78dO" target="_blank" rel="noopener noreferrer"><span class="restaurant">二牛酒家</span></a><div class="pills"><span class="hours">08:00–21:00</span><span class="price">人均 ¥80</span></div></header>
-          <a class="photo-link" href="./pic/puer_food/二牛酒家.png" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/二牛酒家.png" width="523" height="698" loading="lazy" alt="二牛酒家菜品照片，點擊查看原圖"></a>
+          <a class="photo-link" href="./pic/puer_food/二牛酒家.webp" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/二牛酒家.webp" width="523" height="698" loading="lazy" alt="二牛酒家菜品照片，點擊查看原圖"></a>
           <div class="restaurant-details">
             <p class="rec good"><strong>特色與好評</strong>本地人常去的農家館子，主打各種野生菌。<span class="food-highlight">炒見手青</span>口感絲滑、菌香濃郁；<span class="food-highlight">爆炒心管</span>脆嫩香辣；<span class="food-highlight">油炸蜂蛹</span>越嚼越香；<span class="food-highlight">雞樅筍子湯</span>鮮美。食材新鮮、鍋氣足，適合體驗地道農家菜。</p>
             <p class="rec avoid"><strong>差評 / 避坑</strong>環境一般、裝修簡陋；飯點人多，上菜較慢。部分顧客覺得見手青偏油膩，價格不算便宜。位置較偏，建議自駕或提前約車。</p>
@@ -164,7 +165,7 @@
         </article>
         <article class="restaurant-card">
           <header class="restaurant-card-head"><a class="restaurant-name" href="https://surl.amap.com/2RntotEO1v26T" target="_blank" rel="noopener noreferrer"><span class="restaurant">一桂馨遠（吃菌子）</span></a><div class="pills"><span class="hours">11:00–21:00</span><span class="price">人均 ¥82</span></div></header>
-          <a class="photo-link" href="./pic/puer_food/一桂馨远.PNG" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/一桂馨远.PNG" width="1206" height="2622" loading="lazy" alt="一桂馨遠菜品照片，點擊查看原圖"></a>
+          <a class="photo-link" href="./pic/puer_food/一桂馨远.webp" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/一桂馨远.webp" width="1206" height="2622" loading="lazy" alt="一桂馨遠菜品照片，點擊查看原圖"></a>
           <div class="restaurant-details">
             <p class="rec good"><strong>特色與好評</strong>本地人常去的菌子館，主打山野鮮味。必點<span class="food-highlight">炒見手青</span>（大火爆香、脆爽菌香）和<span class="food-highlight">甜筍雞樅湯</span>（清甜鮮美）。食材新鮮，見手青約80元一份；店員親切，等菜時可自取芭蕉、李子墊肚子。</p>
             <p class="rec avoid"><strong>避坑提醒</strong>等菜很慢，口味偏鹹；雞樅菌評價一般，有顧客覺得像平菇、性價比不高，建議斟酌點選。位置偏且難停車。</p>
@@ -173,7 +174,7 @@
         </article>
         <article class="restaurant-card">
           <header class="restaurant-card-head"><a class="restaurant-name" href="https://surl.amap.com/2Rp76UCia9HL" target="_blank" rel="noopener noreferrer"><span class="restaurant">趙雲春小吃店</span></a><div class="pills"><span class="hours">12:00–24:00</span><span class="price">人均 ¥52</span></div></header>
-          <a class="photo-link" href="./pic/puer_food/赵云春小吃店.png" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/赵云春小吃店.png" width="523" height="698" loading="lazy" alt="趙雲春小吃店菜品照片，點擊查看原圖"></a>
+          <a class="photo-link" href="./pic/puer_food/赵云春小吃店.webp" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/赵云春小吃店.webp" width="523" height="698" loading="lazy" alt="趙雲春小吃店菜品照片，點擊查看原圖"></a>
           <div class="restaurant-details">
             <p class="rec good"><strong>特色與好評</strong>李誕推薦過的小店，門面不大但人氣旺。<span class="food-highlight">臭豆腐煮魚</span>是普洱特色，豆腐嫩、味道濃；<span class="food-highlight">嗆雞腳筋</span>脆爽分量足；炒米線味道好但偏鹹。價格實惠，人均約50元，環境比網上評價好。</p>
             <p class="rec avoid"><strong>差評 / 避坑</strong>臭豆腐氣味濃，不習慣類似豆汁風味的請慎點。菜品整體偏鹹偏辣，不能吃辣要特別說明微辣；店在小巷裡不太好找，烤串評價一般。</p>
@@ -183,12 +184,12 @@
       </div>
     </section>
 
-    <section aria-labelledby="noodles">
+    <section class="food-panel" id="panel-noodles" role="tabpanel" aria-labelledby="tab-noodles" hidden>
       <div class="section-head"><h2 id="noodles">🍜 粉麵類</h2><p>2 家米線店 · 早餐、夜宵都能安排</p></div>
       <div class="restaurant-grid">
         <article class="restaurant-card">
           <header class="restaurant-card-head"><a class="restaurant-name" href="https://surl.amap.com/2RqCet4GZaBQ" target="_blank" rel="noopener noreferrer"><span class="restaurant">袁老奶米線</span></a><div class="pills"><span class="hours">06:30–13:00<br>19:00–04:00</span><span class="price">深夜營業</span></div></header>
-          <a class="photo-link" href="./pic/puer_food/袁老奶米线.png" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/袁老奶米线.png" width="1048" height="1396" loading="lazy" alt="袁老奶米線照片，點擊查看原圖"></a>
+          <a class="photo-link" href="./pic/puer_food/袁老奶米线.webp" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/袁老奶米线.webp" width="1048" height="1396" loading="lazy" alt="袁老奶米線照片，點擊查看原圖"></a>
           <div class="restaurant-details">
             <p class="rec good"><strong>特色與好評</strong>開了二十多年的深夜寶藏老店，專做夜宵。湯底濃郁，<span class="food-highlight">泡蘿蔔片</span>脆嫩酸香，是米線的靈魂；油辣椒後勁足，花椒麻味濃。本地人喜愛，適合高鐵到站後去吃一碗。</p>
             <p class="rec avoid"><strong>差評 / 避坑</strong>營業到凌晨，飯點人多要排隊；辣椒很辣，不吃辣請留意；環境簡單，就是普通小店。</p>
@@ -197,7 +198,7 @@
         </article>
         <article class="restaurant-card">
           <header class="restaurant-card-head"><a class="restaurant-name" href="https://surl.amap.com/2RwPzUAm148Nd" target="_blank" rel="noopener noreferrer"><span class="restaurant">楊記酸醋米線</span></a><div class="pills"><span class="hours">07:00–13:00<br>17:00–22:30</span></div></header>
-          <a class="photo-link" href="./pic/puer_food/杨记酸醋米线.png" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/杨记酸醋米线.png" width="1080" height="1440" loading="lazy" alt="楊記酸醋米線照片，點擊查看原圖"></a>
+          <a class="photo-link" href="./pic/puer_food/杨记酸醋米线.webp" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/杨记酸醋米线.webp" width="1080" height="1440" loading="lazy" alt="楊記酸醋米線照片，點擊查看原圖"></a>
           <div class="restaurant-details">
             <p class="rec good"><strong>特色與好評</strong>藏在小巷裡的熱門店，紅色招牌醒目。特色是<span class="food-highlight">自製酸醋</span>，可從大缸裡舀醋，加冰喝很爽；米線有韌勁，可加辣椒和花椒油。酸醋加冰很搭，米線Q彈、分量足，常有人專程排隊來吃。</p>
             <p class="rec avoid"><strong>差評 / 避坑</strong>人很多，最好有人排隊、有人佔座；辣椒很辣，醋也偏酸，不愛酸可能喝不慣。有人覺得米線偏鹹，可請老闆多煮一會、口感軟一些。</p>
@@ -207,12 +208,12 @@
       </div>
     </section>
 
-    <section aria-labelledby="snacks">
+    <section class="food-panel" id="panel-snacks" role="tabpanel" aria-labelledby="tab-snacks" hidden>
       <div class="section-head"><h2 id="snacks">🥮 小吃類</h2><p>1 家糕點店 · 適合買伴手禮</p></div>
       <div class="restaurant-grid">
         <article class="restaurant-card">
           <header class="restaurant-card-head"><a class="restaurant-name" href="https://surl.amap.com/2RHydPka1ebCJ" target="_blank" rel="noopener noreferrer"><span class="restaurant">欣記豆沙糕點店</span></a><div class="pills"><span class="hours">08:30–22:00</span></div></header>
-          <a class="photo-link" href="./pic/puer_food/欣记豆沙糕点店.png" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/欣记豆沙糕点店.png" width="1048" height="1396" loading="lazy" alt="欣記豆沙糕點店糕點照片，點擊查看原圖"></a>
+          <a class="photo-link" href="./pic/puer_food/欣记豆沙糕点店.webp" target="_blank" rel="noopener noreferrer"><img src="./pic/puer_food/欣记豆沙糕点店.webp" width="1048" height="1396" loading="lazy" alt="欣記豆沙糕點店糕點照片，點擊查看原圖"></a>
           <div class="restaurant-details">
             <p class="rec good"><strong>特色與好評</strong>戴家巷和五一步行街都有店，主打現烤糕點。<span class="food-highlight">雲腿酥</span>層層掉渣、鹹香不膩；<span class="food-highlight">鮮花餅</span>玫瑰香濃、甜度柔和；三仁酥香酥甜。新鮮出爐特別香，適合買伴手禮。</p>
             <p class="rec avoid"><strong>差評 / 避坑</strong>去早了可能有些品種還沒賣；鮮花餅評價中等偏上，吃多會覺得甜。單個約7元，價格不算特別便宜。</p>
@@ -224,5 +225,33 @@
   </main>
   <footer>普洱美食推薦 · <a href="../index.html#days">返回完整行程</a></footer>
   <a class="home-float" href="../index.html" aria-label="返回首頁">⌂ 返回首頁</a>
+  <script>
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
+      function activate(tab) {
+        tabs.forEach(function (item) {
+          var active = item === tab;
+          item.setAttribute('aria-selected', String(active));
+          item.tabIndex = active ? 0 : -1;
+        });
+        panels.forEach(function (panel) { panel.hidden = panel.id !== tab.getAttribute('aria-controls'); });
+      }
+      tabs.forEach(function (tab, index) {
+        tab.addEventListener('click', function () { activate(tab); });
+        tab.addEventListener('keydown', function (event) {
+          var next = index;
+          if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          tabs[next].focus();
+          activate(tabs[next]);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
