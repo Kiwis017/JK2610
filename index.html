@@ -1290,7 +1290,8 @@
             '<div class="detail">' + esc(s.detail) + '</div>' +
             '</li>';
         }).join('');
-        var mealCards = isOct13
+        var dayNumber = Number(d.n);
+        var mealCards = isOct13 || dayNumber === 2
           ? '<div class="meta-item recommendation-panel"><span class="ico">🍽</span><div class="txt"><b>餐食建議</b>' +
               '<div class="recommendation-actions">' +
                 '<a class="meal-lunch-link" href="./trip-files/10-13-lunch.html">🍜 午餐推荐</a>' +
@@ -1304,6 +1305,9 @@
                 '<a class="meal-lunch-link" href="./trip-files/10-13-massage.html">💆 按摩SPA</a>' +
               '</div>' +
             '</div></div>'
+          : dayNumber === 3
+          ? '<div class="meta-item recommendation-panel"><span class="ico">🍽</span><div class="txt"><b>餐食建議</b></div></div>' +
+            '<div class="meta-item recommendation-panel"><span class="ico">🎒</span><div class="txt"><b>玩樂放鬆</b></div></div>'
           : '';
         var dayTools = Number(d.n) === 2
           ? '<section class="day-tools" aria-label="第二天出行小工具">' +
@@ -1320,7 +1324,8 @@
               '<h4 class="day-tools-title">🧰 出行小工具</h4>' +
               '<div class="recommendation-actions">' +
                 '<a class="meal-lunch-link" href="https://surl.amap.com/18OPYjJ4Nfi5" target="_blank" rel="noopener">🚄 导航到版纳高铁站</a>' +
-                '<a class="meal-lunch-link" href="./trip-files/pic/banner-puer/版纳-普洱高铁时刻表.webp" target="_blank" rel="noopener">🚆 版纳—普洱高铁时刻表（3图）</a>' +
+                '<a class="meal-lunch-link" href="https://surl.amap.com/1EoczWOqp9XH" target="_blank" rel="noopener">🚗 导航至神州租车·滨江双塔服务点</a>' +
+                '<a class="meal-lunch-link" href="./trip-files/pic/banner-puer/版纳-普洱高铁时刻表.webp" target="_blank" rel="noopener">🚆 版纳—普洱高铁时刻表（07:00～15:00）</a>' +
               '</div>' +
             '</section>'
           : '';
