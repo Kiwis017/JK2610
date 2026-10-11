@@ -471,12 +471,12 @@
     </section>
     <nav class="tab-bar" aria-label="飲品推薦分類">
       <div class="tab-list" role="tablist" aria-label="選擇飲品類別">
-        <button class="tab-button" id="tab-noncoffee" type="button" role="tab" aria-controls="panel-noncoffee" aria-selected="true">🍹 非咖啡類</button>
-        <button class="tab-button" id="tab-coffee" type="button" role="tab" aria-controls="panel-coffee" aria-selected="false" tabindex="-1">☕ 咖啡類</button>
+        <button class="tab-button" id="tab-coffee" type="button" role="tab" aria-controls="panel-coffee" aria-selected="true">☕ 咖啡類</button>
+        <button class="tab-button" id="tab-noncoffee" type="button" role="tab" aria-controls="panel-noncoffee" aria-selected="false" tabindex="-1">🍹 非咖啡類</button>
       </div>
     </nav>
     <div class="category-panels">
-    <section class="category-panel" id="panel-noncoffee" role="tabpanel" aria-labelledby="tab-noncoffee">
+    <section class="category-panel" id="panel-noncoffee" role="tabpanel" aria-labelledby="tab-noncoffee" hidden>
       <div class="panel-heading"><h2 id="noncoffee-heading">非咖啡類</h2><span>3 家精選 · 酒類排在首位</span></div>
       <div class="store-list">
         <article class="store-card">
@@ -506,7 +506,7 @@
       </div>
     </section>
 
-    <section class="category-panel" id="panel-coffee" role="tabpanel" aria-labelledby="tab-coffee" hidden>
+    <section class="category-panel" id="panel-coffee" role="tabpanel" aria-labelledby="tab-coffee">
       <div class="panel-heading"><h2 id="coffee-heading">咖啡類</h2><span>4 家精選</span></div>
       <div class="store-list">
         <article class="store-card">
