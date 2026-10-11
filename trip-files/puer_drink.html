@@ -132,15 +132,35 @@
       font-size: 15px;
     }
 
-    .category-columns {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: start;
-      gap: clamp(24px, 4vw, 46px);
+    .tab-bar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      margin: 0 auto 28px;
+      padding: 6px;
+      border: 1px solid #e0e5df;
+      border-radius: 12px;
+      background: rgba(255,255,255,.96);
+      box-shadow: 0 4px 14px rgba(27,73,54,.045);
+      backdrop-filter: blur(10px);
     }
 
-    #panel-coffee { grid-column: 1; grid-row: 1; }
-    #panel-noncoffee { grid-column: 2; grid-row: 1; }
+    .tab-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+    .tab-button {
+      min-height: 44px;
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 8px;
+      color: #52665b;
+      background: transparent;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+    .tab-button[aria-selected="true"] { color: #fff; background: var(--green-dark); }
+    .tab-button:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+    .category-panel[hidden] { display: none !important; }
 
     .panel-heading {
       display: flex;
@@ -392,18 +412,6 @@
     }
 
     @media (max-width: 820px) {
-      .category-columns {
-        grid-template-columns: 1fr;
-        gap: 22px;
-      }
-
-      #panel-coffee, #panel-noncoffee {
-        grid-column: 1;
-        grid-row: auto;
-      }
-
-      #panel-coffee { order: 1; }
-      #panel-noncoffee { order: 2; }
     }
 
     @media (max-width: 420px) {
@@ -437,16 +445,6 @@
 
       .panel-heading { margin-top: 26px; }
 
-      .category-columns {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      #panel-coffee, #panel-noncoffee {
-        grid-column: 1;
-        grid-row: auto;
-      }
-
       .panel-heading h2 {
         font-size: 23px;
       }
@@ -469,10 +467,16 @@
     <section class="hero" aria-labelledby="page-title">
       <div class="eyebrow">普洱 <span>·</span> 飲品地圖</div>
       <h1 id="page-title">普洱飲品推薦</h1>
-      <p>咖啡類在左、非咖啡類在右，店鋪逐條排列。點擊店名可跳轉高德地圖；有大眾點評連結的店舖亦提供獨立入口。</p>
+      <p>切換咖啡類與非咖啡類瀏覽，店鋪逐條排列。點擊店名可跳轉高德地圖；有大眾點評連結的店舖亦提供獨立入口。</p>
     </section>
-    <div class="category-columns">
-    <section class="category-panel" id="panel-noncoffee" aria-labelledby="noncoffee-heading">
+    <nav class="tab-bar" aria-label="飲品推薦分類">
+      <div class="tab-list" role="tablist" aria-label="選擇飲品類別">
+        <button class="tab-button" id="tab-noncoffee" type="button" role="tab" aria-controls="panel-noncoffee" aria-selected="true">🍹 非咖啡類</button>
+        <button class="tab-button" id="tab-coffee" type="button" role="tab" aria-controls="panel-coffee" aria-selected="false" tabindex="-1">☕ 咖啡類</button>
+      </div>
+    </nav>
+    <div class="category-panels">
+    <section class="category-panel" id="panel-noncoffee" role="tabpanel" aria-labelledby="tab-noncoffee">
       <div class="panel-heading"><h2 id="noncoffee-heading">非咖啡類</h2><span>3 家精選 · 酒類排在首位</span></div>
       <div class="store-list">
         <article class="store-card">
@@ -502,7 +506,7 @@
       </div>
     </section>
 
-    <section class="category-panel" id="panel-coffee" aria-labelledby="coffee-heading">
+    <section class="category-panel" id="panel-coffee" role="tabpanel" aria-labelledby="tab-coffee" hidden>
       <div class="panel-heading"><h2 id="coffee-heading">咖啡類</h2><span>4 家精選</span></div>
       <div class="store-list">
         <article class="store-card">
@@ -541,6 +545,34 @@
   </main>
   <footer>普洱飲品推薦 · <a href="../index.html#days">返回完整行程</a></footer>
   <a class="home-float" href="../index.html" aria-label="返回首頁">⌂ 返回首頁</a>
+  <script>
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
+      function activate(tab) {
+        tabs.forEach(function (item) {
+          var active = item === tab;
+          item.setAttribute('aria-selected', String(active));
+          item.tabIndex = active ? 0 : -1;
+        });
+        panels.forEach(function (panel) { panel.hidden = panel.id !== tab.getAttribute('aria-controls'); });
+      }
+      tabs.forEach(function (tab, index) {
+        tab.addEventListener('click', function () { activate(tab); });
+        tab.addEventListener('keydown', function (event) {
+          var next = index;
+          if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          tabs[next].focus();
+          activate(tabs[next]);
+        });
+      });
+    })();
+  </script>
 </body>
 
 </html>
