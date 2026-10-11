@@ -399,6 +399,8 @@
     .tl li.tl-spacer::before { display: none; }
     .tl .what { font-weight: 800; color: var(--ink); font-size: 15px; }
     .tl .detail { color: var(--muted); font-size: 13.8px; margin-top: 2px; }
+    .tl .detail { white-space: pre-line; }
+    .tl .detail strong { color: var(--ink-soft); font-weight: 900; }
     .tl .highlight {
       display: inline-flex; align-items: center; gap: 6px; margin-top: 6px;
       font-size: 12.5px; font-weight: 700; color: var(--peacock-500);
@@ -1184,7 +1186,7 @@
       }
       return text;
     }
-    function daysFromWorkbook(activityRows, mealRows, planRows) {
+    function daysFromWorkbook(activityRows, mealRows) {
       var byDate = {}, dates = [], currentDate = '';
       activityRows.forEach(function (row) {
         var date = excelDate(row['日期']);
@@ -1204,28 +1206,23 @@
         var detail = note.replace(/\s*交通：.+$/, '').trim();
         var transport = traffic ? traffic[1].trim() : String(row['交通方式'] || '').trim();
         if (transport && day.traffic.indexOf(transport) < 0) day.traffic += (day.traffic ? '；' : '') + transport;
+        var planValue = String(row['计划'] || row['計劃'] || row['Plan'] || '').trim();
+        var planMatch = planValue.match(/^plan\s*([ab])$/i);
+        var planLabel = planMatch ? 'Plan ' + planMatch[1].toUpperCase() : planValue;
         day.slots.push({ t: excelTime(row['時間段']), what: String(row['活動名稱'] || '').trim(),
-          detail: detail });
+          detail: detail, plan: planLabel });
+        if (planLabel && !day.plans.some(function (plan) { return plan.label === planLabel; })) day.plans.push({ label: planLabel });
       });
       mealRows.forEach(function (row) {
         if (String(row['類別'] || '').trim() !== '餐飲') return;
         var day = byDate[excelDate(row['入住或用餐日期'])], meal = String(row['推薦菜或房型'] || row['備註'] || '').trim();
         if (day && meal) day.meals += (day.meals ? '；' : '') + meal;
       });
-      (planRows || []).forEach(function (row) {
-        var day = byDate[excelDate(row['日期'])];
-        var title = String(row['方案標題'] || '').trim();
-        if (!day || !title) return;
-        day.plans.push({
-          label: String(row['方案'] || '').trim(),
-          title: title,
-          time: excelTime(row['時間安排']),
-          detail: String(row['行程說明'] || '').trim()
-        });
-      });
       return dates.map(function (date) {
         var day = byDate[date];
-        day.sub = day.slots.map(function (slot) { return slot.what; }).filter(Boolean).join(' · ');
+        var defaultPlan = day.plans.length ? day.plans[0].label : '';
+        day.sub = day.slots.filter(function (slot) { return !slot.plan || slot.plan === defaultPlan; })
+          .map(function (slot) { return slot.what; }).filter(Boolean).join(' · ');
         if (!day.meals) day.meals = '此日期未在「住宿餐飲表」中填寫餐食安排。';
         if (!day.traffic) day.traffic = '請查看每日行程明細中的交通方式。';
         return day;
@@ -1233,9 +1230,8 @@
     }
     function loadDailyExcel(file) {
       return Promise.all([ProjectXlsxReader.readWorkbook(file, '每日行程明細表'),
-        ProjectXlsxReader.readWorkbook(file, '住宿餐飲表'),
-        ProjectXlsxReader.readWorkbook(file, '行程方案')]).then(function (sheets) {
-        var days = daysFromWorkbook(sheets[0], sheets[1], sheets[2]);
+        ProjectXlsxReader.readWorkbook(file, '住宿餐飲表')]).then(function (sheets) {
+        var days = daysFromWorkbook(sheets[0], sheets[1]);
         if (!days.length) throw new Error('「每日行程明細表」沒有可讀取的行程資料');
         DAYS = days; renderDays(); renderDayBar();
         var status = document.getElementById('dailyExcelStatus');
@@ -1248,8 +1244,8 @@
       for (var i = 0; i < bytes.length; i++) { hash ^= bytes[i]; hash = Math.imul(hash, 16777619); }
       return bytes.length + ':' + (hash >>> 0);
     }
-    function fetchProjectWorkbook(name, loader, statusId) {
-      return fetch('./trip-files/' + encodeURIComponent(name) + '?_=' + Date.now(), { cache: 'no-store' }).then(function (response) {
+    function fetchProjectWorkbook(name, loader, statusId, sourcePath) {
+      return fetch((sourcePath || './trip-files/' + encodeURIComponent(name)) + '?_=' + Date.now(), { cache: 'no-store' }).then(function (response) {
         if (!response.ok) throw new Error('無法讀取 ' + name + '（HTTP ' + response.status + '）');
         return response.arrayBuffer();
       }).then(function (buffer) {
@@ -1276,7 +1272,7 @@
     }
     function reloadProjectExcels() {
       if (location.protocol === 'file:') {
-        var message = '本機使用時，請雙擊 trip-files/開啟行程攻略.command；GitHub 網頁版可直接讀取 trip-files 內的 Excel。';
+        var message = '本機使用時，請雙擊 trip-files/開啟行程攻略.command；網頁會讀取項目資料夾中的行程 Excel。';
         var prepStatus = document.getElementById('checklistExcelStatus');
         var dayStatus = document.getElementById('dailyExcelStatus');
         if (prepStatus) prepStatus.textContent = message;
@@ -1288,7 +1284,7 @@
       sourceReloadBusy = true;
       Promise.all([
         fetchProjectWorkbook('行前準備清單.xlsx', loadChecklistExcel, 'checklistExcelStatus'),
-        fetchProjectWorkbook('西雙版納·普洱每日行程資料.xlsx', loadDailyExcel, 'dailyExcelStatus')
+        fetchProjectWorkbook('西雙版納·普洱每日行程資料.xlsx', loadDailyExcel, 'dailyExcelStatus', './西雙版納·普洱每日行程資料.xlsx')
       ]).finally(function () {
         sourceReloadBusy = false;
         if (sourceReloadQueued) { sourceReloadQueued = false; reloadProjectExcels(); }
@@ -1306,6 +1302,17 @@
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
     }
+    function richText(s) {
+      return esc(s).replace(/\d+(?:[.:：\-–—~～/]\d+)*/g, '<strong>$&</strong>');
+    }
+
+    function dayTimelineHTML(day, selectedPlan) {
+      return day.slots.filter(function (slot) { return !slot.plan || slot.plan === selectedPlan; }).map(function (s) {
+        if (s.spacer) return '<li class="tl-spacer" aria-hidden="true"></li>';
+        return '<li>' + (s.t ? '<span class="slot' + (/\d/.test(s.t) ? ' numeric-time' : '') + '">' + esc(s.t) + '</span>' : '') +
+          '<div class="what">' + esc(s.what) + '</div><div class="detail">' + richText(s.detail) + '</div></li>';
+      }).join('');
+    }
 
     // ── 渲染：每日詳細行程 ──
     function renderDays() {
@@ -1317,19 +1324,12 @@
       }
       host.innerHTML = DAYS.map(function (d) {
         var isOct13 = String(d.date).slice(0, 5) === '10/13';
+        var selectedPlan = d.plans && d.plans.length ? d.plans[0].label : '';
         var planTabs = (d.plans || []).length > 1
           ? '<section class="day-plan-section" aria-label="' + esc(d.date) + '整日方案"><p class="day-plan-hint">選擇方案以切換當日完整時間線</p><div class="day-plan-tabs" role="tablist" aria-label="選擇整日行程方案">' +
             d.plans.map(function (plan, index) {
               return '<button class="day-plan-tab" type="button" role="tab" aria-selected="' + (index === 0) + '" tabindex="' + (index === 0 ? '0' : '-1') + '" data-plan-index="' + index + '">' + esc(plan.label || ('Plan ' + (index + 1))) + '</button>';
             }).join('') + '</div></section>' : '';
-        var slots = d.slots.map(function (s) {
-          if (s.spacer) return '<li class="tl-spacer" aria-hidden="true"></li>';
-          return '<li>' +
-            (s.t ? '<span class="slot' + (/\d/.test(s.t) ? ' numeric-time' : '') + '">' + esc(s.t) + '</span>' : '') +
-            '<div class="what">' + esc(s.what) + '</div>' +
-            '<div class="detail">' + esc(s.detail) + '</div>' +
-            '</li>';
-        }).join('');
         var dayNumber = Number(d.n);
         var mealCards = isOct13 || dayNumber === 2
           ? '<div class="meta-item recommendation-panel"><span class="ico">🍽</span><div class="txt"><b>餐食建議</b>' +
@@ -1349,8 +1349,6 @@
           ? '<div class="meta-item recommendation-panel"><span class="ico">🍽</span><div class="txt"><b>餐食建議</b></div></div>' +
             '<div class="meta-item recommendation-panel"><span class="ico">🎒</span><div class="txt"><b>玩樂放鬆</b></div></div>'
           : '';
-        var selectedPlan = d.plans && d.plans[0];
-        var planSlot = selectedPlan ? '<li class="plan-timeline-item"><span class="slot numeric-time">' + esc(selectedPlan.time || '') + '</span><div class="what">' + esc(selectedPlan.title) + '</div><div class="detail">' + esc(selectedPlan.detail) + '</div></li>' : '';
         var dayTools = Number(d.n) === 2
           ? '<section class="day-tools" aria-label="第二天出行小工具">' +
               '<h4 class="day-tools-title">🧰 出行小工具</h4>' +
@@ -1367,7 +1365,7 @@
               '<div class="recommendation-actions">' +
                 '<a class="meal-lunch-link" href="https://surl.amap.com/18OPYjJ4Nfi5" target="_blank" rel="noopener">🚄 导航到版纳高铁站</a>' +
                 '<a class="meal-lunch-link" href="https://surl.amap.com/1EoczWOqp9XH" target="_blank" rel="noopener">🚗 导航至神州租车·滨江双塔服务点</a>' +
-                '<a class="meal-lunch-link" href="https://surl.amap.com/1WRuDRBQe4ln" target="_blank" rel="noopener">☕ 导航到小凹子咖啡庄园</a>' +
+                '<a class="meal-lunch-link" href="https://surl.amap.com/2DxkbI0eR4rG" target="_blank" rel="noopener">☕ 导航到炬点咖啡庄园</a>' +
                 '<a class="meal-lunch-link" href="./trip-files/pic/banner-puer/版纳-普洱高铁时刻表.webp" target="_blank" rel="noopener">🚆 版纳—普洱高铁时刻表（07:00～15:00）</a>' +
               '</div>' +
             '</section>'
@@ -1381,7 +1379,7 @@
           '<div class="day-body">' +
             dayTools +
             planTabs +
-            '<ul class="tl">' + slots + planSlot + '</ul>' +
+            '<ul class="tl">' + dayTimelineHTML(d, selectedPlan) + '</ul>' +
             (mealCards ? '<div class="day-meta">' + mealCards + '</div>' : '') +
           '</div>' +
         '</article>';
@@ -1392,25 +1390,6 @@
         var tabs = Array.prototype.slice.call(section.querySelectorAll('[role="tab"]'));
         var dayData = DAYS.filter(function (day) { return String(day.n) === dayCard.getAttribute('data-day'); })[0];
         var timeline = dayCard.querySelector('.tl');
-        var commonTimeline = Array.prototype.filter.call(timeline.children, function (item) {
-          return !item.classList.contains('plan-timeline-item');
-        }).map(function (item) { return item.outerHTML; }).join('');
-        function timelineWithPlan(plan) {
-          var planItem = '<li class="plan-timeline-item"><span class="slot numeric-time">' + esc(plan.time || '') + '</span><div class="what">' + esc(plan.title) + '</div><div class="detail">' + esc(plan.detail) + '</div></li>';
-          var planMinutes = String(plan.time || '').match(/(?:^|\D)(\d{1,2}):(\d{2})/);
-          if (!planMinutes) return commonTimeline + planItem;
-          var target = Number(planMinutes[1]) * 60 + Number(planMinutes[2]);
-          var originals = Array.prototype.filter.call(timeline.children, function (item) { return !item.classList.contains('plan-timeline-item'); });
-          var insertAt = originals.length;
-          originals.some(function (item, index) {
-            var label = item.querySelector('.slot'), match = label && label.textContent.match(/(\d{1,2}):(\d{2})/);
-            if (match && Number(match[1]) * 60 + Number(match[2]) > target) { insertAt = index; return true; }
-            return false;
-          });
-          var html = originals.map(function (item) { return item.outerHTML; });
-          html.splice(insertAt, 0, planItem);
-          return html.join('');
-        }
         tabs.forEach(function (tab, index) {
           tab.addEventListener('click', function () {
             tabs.forEach(function (otherTab, otherIndex) {
@@ -1418,8 +1397,7 @@
               otherTab.setAttribute('aria-selected', String(selected));
               otherTab.tabIndex = selected ? 0 : -1;
             });
-            var plan = dayData.plans[index];
-            timeline.innerHTML = timelineWithPlan(plan);
+            timeline.innerHTML = dayTimelineHTML(dayData, dayData.plans[index].label);
           });
           tab.addEventListener('keydown', function (event) {
             if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
